@@ -1,0 +1,25 @@
+<?php
+
+use App\Http\Controllers\ClientController;
+use App\Http\Controllers\CategorieClientController;
+use App\Http\Controllers\AgenceController;
+use App\Http\Controllers\FournisseurController;
+use App\Http\Controllers\CorrespondantController;
+use App\Http\Controllers\FournisseurClientController;
+use App\Http\Controllers\CorrespondantClientController;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Route;
+
+Route::get('/clients', [ClientController::class, 'getAllClients']);
+Route::post('/client', [ClientController::class, 'createClient']);
+Route::get('/categorieClients', [CategorieClientController::class, 'getAllCategorieClients']);
+Route::get('/agences', [AgenceController::class, 'getAllAgences']);
+Route::get('/fournisseurs', [FournisseurController::class, 'getAllFournisseurs']);
+Route::get('/fournisseur/{id}', [FournisseurController::class, 'getFournisseur']);
+Route::get('/correspondants', [CorrespondantController::class, 'getAllCorrespondants']);
+Route::get('/correspondant/{id}', [CorrespondantController::class, 'getCorrespondant']);
+Route::post('/fournisseurClient', [FournisseurClientController::class, 'createFournisseurClient']);
+Route::post('/correspondantClient', [CorrespondantClientController::class, 'createCorrespondantClient']);
+Route::get('/users', [UserController::class, 'getAllUsers']);
+Route::get('/user/{id}', [UserController::class, 'getUser']);
+Route::post('/user', [UserController::class, 'createUser']);

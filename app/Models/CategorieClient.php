@@ -1,0 +1,26 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class CategorieClient extends Model
+{
+    protected $table = 'categorie_client';
+
+    protected $primaryKey = 'id';
+
+    public $timestamps = false;
+
+    protected $fillable = [
+        'intitule',
+    ];
+
+    /**
+     * Clients belonging to this category
+     */
+    public function clients()
+    {
+        return $this->hasMany(Client::class, 'idcategorie', 'id');
+    }
+}
