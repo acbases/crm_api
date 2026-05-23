@@ -15,4 +15,9 @@ class FournisseurRepository
     {
         return Fournisseur::find($id);
     }
+
+    public function create(array $data)
+    {
+        return Fournisseur::create($data);
+    }
 }

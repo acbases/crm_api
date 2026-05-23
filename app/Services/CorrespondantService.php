@@ -22,4 +22,9 @@ class CorrespondantService
     {
         return $this->correspondantRepository->find($id);
     }
+
+    public function createCorrespondant(array $data)
+    {
+        return $this->correspondantRepository->create($data);
+    }
 }

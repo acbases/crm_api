@@ -15,4 +15,9 @@ class CorrespondantRepository
     {
         return Correspondant::find($id);
     }
+
+    public function create(array $data)
+    {
+        return Correspondant::create($data);
+    }
 }

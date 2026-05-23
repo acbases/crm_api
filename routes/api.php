@@ -14,12 +14,18 @@ Route::get('/clients', [ClientController::class, 'getAllClients']);
 Route::post('/client', [ClientController::class, 'createClient']);
 Route::get('/categorieClients', [CategorieClientController::class, 'getAllCategorieClients']);
 Route::get('/agences', [AgenceController::class, 'getAllAgences']);
+// to test 
 Route::get('/fournisseurs', [FournisseurController::class, 'getAllFournisseurs']);
 Route::get('/fournisseur/{id}', [FournisseurController::class, 'getFournisseur']);
+Route::post('/fournisseur', [FournisseurController::class, 'createFournisseur']);
+
 Route::get('/correspondants', [CorrespondantController::class, 'getAllCorrespondants']);
 Route::get('/correspondant/{id}', [CorrespondantController::class, 'getCorrespondant']);
+Route::post('/correspondant', [CorrespondantController::class, 'createCorrespondant']);
+
 Route::post('/fournisseurClient', [FournisseurClientController::class, 'createFournisseurClient']);
 Route::post('/correspondantClient', [CorrespondantClientController::class, 'createCorrespondantClient']);
+
 Route::get('/users', [UserController::class, 'getAllUsers']);
 Route::get('/user/{id}', [UserController::class, 'getUser']);
 Route::post('/user', [UserController::class, 'createUser']);

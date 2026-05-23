@@ -22,4 +22,9 @@ class FournisseurService
     {
         return $this->fournisseurRepository->find($id);
     }
+
+    public function createFournisseur(array $data)
+    {
+        return $this->fournisseurRepository->create($data);
+    }
 }

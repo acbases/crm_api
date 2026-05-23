@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Services\FournisseurService;
 
 class FournisseurController extends Controller
@@ -25,5 +26,16 @@ class FournisseurController extends Controller
         return response()->json(
             $this->fournisseurService->find($id)
         );
+    }
+
+    public function createFournisseur(Request $request)
+    {
+        $data = $request->validate([
+            'nom' => ['required', 'string', 'max:255'],
+        ]);
+
+        $fournisseur = $this->fournisseurService->createFournisseur($data);
+
+        return response()->json($fournisseur, 201);
     }
 }
