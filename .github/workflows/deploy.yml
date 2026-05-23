@@ -22,9 +22,11 @@ jobs:
 
       - name: Sync Files to Server
         run: |
-          rsync -avz --delete \
+          rsync -avz \
             --exclude=".git" \
             --exclude="node_modules" \
             --exclude="vendor" \
+            --exclude=".env" \
+            --exclude="storage" \
             -e "ssh -i ~/.ssh/id_ed25519" \
             ./ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:${{ secrets.SERVER_PATH }}
