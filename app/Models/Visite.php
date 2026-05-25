@@ -19,7 +19,6 @@ class Visite extends Model
         'statut',
         'type',
         'idtype',
-        
     ];
 
     /**

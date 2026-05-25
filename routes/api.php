@@ -9,6 +9,9 @@ use App\Http\Controllers\FournisseurClientController;
 use App\Http\Controllers\CorrespondantClientController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VisiteController;
+use App\Http\Controllers\TypeVisiteController;
+use App\Http\Controllers\CategorieVisiteController;
+
 
 use Illuminate\Support\Facades\Route;
 
@@ -33,3 +36,7 @@ Route::get('/user/{id}', [UserController::class, 'getUser']);
 Route::post('/user', [UserController::class, 'createUser']);
 
 Route::post('/visite', [VisiteController::class, 'createVisite']);
+
+
+Route::get('/typeVisites', [TypeVisiteController::class, 'getAllTypeVisites']);
+Route::get('/categorieVisites', [CategorieVisiteController::class, 'getAllCategorieVisites']);

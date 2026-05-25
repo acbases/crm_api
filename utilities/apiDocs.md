@@ -65,7 +65,7 @@ page ajout client
     }
 
     get all fournisseurs
-    GET https://allapps.alphaciment.com/crm_back/api/fournisseurS
+    GET https://allapps.alphaciment.com/crm_back/api/fournisseurs
     {
         "nom": "fournisseur test"
     }
@@ -78,4 +78,4 @@ page ajout client
             "idclient": 21
         }
 
-    
+page ajout visite 
