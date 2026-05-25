@@ -8,6 +8,8 @@ use App\Http\Controllers\CorrespondantController;
 use App\Http\Controllers\FournisseurClientController;
 use App\Http\Controllers\CorrespondantClientController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VisiteController;
+
 use Illuminate\Support\Facades\Route;
 
 Route::get('/clients', [ClientController::class, 'getAllClients']);
@@ -29,3 +31,5 @@ Route::post('/correspondantClient', [CorrespondantClientController::class, 'crea
 Route::get('/users', [UserController::class, 'getAllUsers']);
 Route::get('/user/{id}', [UserController::class, 'getUser']);
 Route::post('/user', [UserController::class, 'createUser']);
+
+Route::post('/visite', [VisiteController::class, 'createVisite']);
