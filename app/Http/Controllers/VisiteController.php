@@ -16,7 +16,7 @@ class VisiteController extends Controller
 
     public function getAllVisites()
     {
-    
+
         return response()->json(
             $this->visiteService->getAllVisites()
         );
@@ -30,4 +30,18 @@ class VisiteController extends Controller
 
         return response()->json($visite, 201);
     }
+
+    public function findVisite($id)
+    {
+        $visite = $this->visiteService->findVisite($id);
+
+        if (! $visite) {
+            return response()->json([
+                'message' => 'Visite not found',
+            ], 404);
+        }
+
+        return response()->json($visite);
+    }
+
 }

@@ -38,7 +38,7 @@ class Client extends Model
     /**
      * Relation with categorie_client table
      */
-    public function categorie()
+    public function categorieClient()
     {
         return $this->belongsTo(CategorieClient::class, 'idcategorie', 'id');
     }

@@ -40,7 +40,7 @@ class Visite extends Model
     /**
      * Categorie visite linked to this visite
      */
-    public function categorie()
+    public function categorieVisite()
     {
         return $this->belongsTo(CategorieVisite::class, 'idcategorie', 'id');
     }

@@ -13,7 +13,7 @@ class ClientRepository
 
     public function find($id)
     {
-        return Client::with(['agence', 'categorie'])->find($id);
+        return Client::with(['agence', 'categorieClient'])->find($id);
     }
 
     public function create(array $data)

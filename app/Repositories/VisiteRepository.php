@@ -6,15 +6,17 @@ use App\Models\Visite;
 
 class VisiteRepository
 {
-    
     public function all()
     {
         return Visite::all();
     }
-    
+
     public function find($id)
     {
-        return Visite::find($id);
+        return Visite::with([
+            'client.categorieClient', 
+            'categorieVisite'
+            ])->find($id);
     }
 
     public function create(array $data)

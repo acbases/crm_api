@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/clients', [ClientController::class, 'getAllClients']);
 Route::post('/client', [ClientController::class, 'createClient']);
+Route::get('/client/{id}', [ClientController::class, 'findClient']);
 Route::get('/categorieClients', [CategorieClientController::class, 'getAllCategorieClients']);
 Route::get('/agences', [AgenceController::class, 'getAllAgences']);
 // to test 
@@ -37,6 +38,7 @@ Route::post('/user', [UserController::class, 'createUser']);
 
 Route::post('/visite', [VisiteController::class, 'createVisite']);
 Route::get('/visite', [VisiteController::class, 'getAllVisites']);
+Route::get('/visite/{id}', [VisiteController::class, 'findVisite']);
 
 
 Route::get('/typeVisites', [TypeVisiteController::class, 'getAllTypeVisites']);
