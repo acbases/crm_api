@@ -15,7 +15,8 @@ class VisiteRepository
     {
         return Visite::with([
             'client.categorieClient', 
-            'categorieVisite'
+            'categorieVisite',
+            'typeVisite'
             ])->find($id);
     }
 
@@ -27,7 +28,15 @@ class VisiteRepository
     public function getVisiteByIdClient($id){
         return Visite::where('idclient', $id)->with([
             'client.categorieClient', 
-            'categorieVisite'
+            'categorieVisite', 
+            'typeVisite'
+            ])->get();
+    }
+    public function getVisiteByIdUtilisateur($id){
+        return Visite::where('idutilisateur', $id)->with([
+            'client.categorieClient', 
+            'categorieVisite',
+            'typeVisite'
             ])->get();
     }
     

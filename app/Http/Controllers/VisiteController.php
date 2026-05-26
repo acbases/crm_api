@@ -55,4 +55,16 @@ class VisiteController extends Controller
 
         return response()->json($visites);
     }
+    public function getVisiteByIdUtilisateur($id)
+    {
+        $visites = $this->visiteService->getVisiteByIdUtilisateur($id);
+
+        if ($visites->isEmpty()) {
+            return response()->json([
+                'message' => 'No visites found for this user',
+            ], 404);
+        }
+
+        return response()->json($visites);
+    }
 }
