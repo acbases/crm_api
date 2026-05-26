@@ -22,4 +22,9 @@ class ClientService
     {
         return $this->clientRepository->create($data);
     }
+
+    public function findClient($id)
+    {
+        return $this->clientRepository->find($id);
+    }
 }

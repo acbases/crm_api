@@ -10,7 +10,6 @@ class Visite extends Model
 
     protected $primaryKey = 'id';
 
-
     protected $fillable = [
         'idclient',
         'idutilisateur',
@@ -19,6 +18,7 @@ class Visite extends Model
         'statut',
         'type',
         'idtype',
+        'object',
     ];
 
     /**
