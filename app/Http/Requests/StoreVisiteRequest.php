@@ -21,6 +21,7 @@ class StoreVisiteRequest extends FormRequest
             'statut' => ['nullable', 'integer', 'min:1',],
             'type' => ['nullable', 'integer', 'min:1',],
             'idtype' => ['nullable', 'integer', 'min:1', 'exists:type_visite,id'],
+            'object' => ['nullable', 'string'],
         ];
     }
 }
