@@ -30,4 +30,5 @@ class VisiteRepository
             'categorieVisite'
             ])->get();
     }
+    
 }
