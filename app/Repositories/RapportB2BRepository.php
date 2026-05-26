@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\Client;
+use App\Models\RapportB2B;
 
 class RapportB2BRepository
 {
@@ -18,6 +18,6 @@ class RapportB2BRepository
 
     public function create(array $data)
     {
-        return Client::create($data);
+        return RapportB2B::create($data);
     }
 }
