@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Correspondant extends Model
 {
     protected $table = 'correspondant';
+    protected $primaryKey = 'id';
     public $timestamps = false;
 
     protected $fillable = ['nom', 'poste', 'contact'];

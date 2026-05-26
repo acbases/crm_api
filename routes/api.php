@@ -11,6 +11,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\VisiteController;
 use App\Http\Controllers\TypeVisiteController;
 use App\Http\Controllers\CategorieVisiteController;
+use App\Http\Controllers\RapportB2BController;
 
 
 use Illuminate\Support\Facades\Route;
@@ -44,3 +45,5 @@ Route::get('/visiteByIdClient/{id}', [VisiteController::class, 'getVisiteByIdCli
 
 Route::get('/typeVisites', [TypeVisiteController::class, 'getAllTypeVisites']);
 Route::get('/categorieVisites', [CategorieVisiteController::class, 'getAllCategorieVisites']);
+
+Route::post('/rapportB2B', [RapportB2BController::class, 'createRapportB2B']);

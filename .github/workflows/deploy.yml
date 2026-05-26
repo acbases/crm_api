@@ -23,9 +23,6 @@ jobs:
       - name: Sync Files to Server
         run: |
           rsync -avz \
-            --no-perms \
-            --no-owner \
-            --no-group \
             --exclude=".git" \
             --exclude="node_modules" \
             --exclude="vendor" \

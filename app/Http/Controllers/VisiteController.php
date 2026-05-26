@@ -55,5 +55,4 @@ class VisiteController extends Controller
 
         return response()->json($visites);
     }
-
 }
