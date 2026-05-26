@@ -43,5 +43,17 @@ class VisiteController extends Controller
 
         return response()->json($visite);
     }
+    public function getVisiteByIdClient($id)
+    {
+        $visites = $this->visiteService->getVisiteByIdClient($id);
+
+        if ($visites->isEmpty()) {
+            return response()->json([
+                'message' => 'No visites found for this client',
+            ], 404);
+        }
+
+        return response()->json($visites);
+    }
 
 }

@@ -39,6 +39,7 @@ Route::post('/user', [UserController::class, 'createUser']);
 Route::post('/visite', [VisiteController::class, 'createVisite']);
 Route::get('/visite', [VisiteController::class, 'getAllVisites']);
 Route::get('/visite/{id}', [VisiteController::class, 'findVisite']);
+Route::get('/visiteByIdClient/{id}', [VisiteController::class, 'getVisiteByIdClient']);
 
 
 Route::get('/typeVisites', [TypeVisiteController::class, 'getAllTypeVisites']);

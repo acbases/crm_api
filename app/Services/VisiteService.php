@@ -26,4 +26,9 @@ class VisiteService
     {
         return $this->visiteRepository->find($id);
     }
+
+    public function getVisiteByIdClient($id)
+    {
+        return $this->visiteRepository->getVisiteByIdClient($id);
+    }
 }

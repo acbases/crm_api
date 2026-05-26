@@ -23,4 +23,11 @@ class VisiteRepository
     {
         return Visite::create($data);
     }
+
+    public function getVisiteByIdClient($id){
+        return Visite::where('idclient', $id)->with([
+            'client.categorieClient', 
+            'categorieVisite'
+            ])->get();
+    }
 }
