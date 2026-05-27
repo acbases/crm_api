@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class RapportB2B extends Model
 {
@@ -24,6 +25,22 @@ class RapportB2B extends Model
     protected $casts = [
         'prochaine_visite' => 'date',
     ];
+
+    /**
+     * Expose the stored file path as a full public URL.
+     */
+    public function getSaryAttribute($value)
+    {
+        if (! $value) {
+            return null;
+        }
+
+        if (filter_var($value, FILTER_VALIDATE_URL)) {
+            return $value;
+        }
+
+        return Storage::disk('public')->url($value);
+    }
 
     /**
      * Relation with visite table

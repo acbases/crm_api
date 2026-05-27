@@ -22,14 +22,7 @@ class RapportB2BController extends Controller
         );
     }
 
-    public function createRapportB2B(StoreRapportB2BRequest $request)
-    {
-        $rapportB2B = $this->rapportB2BService->createRapportB2B(
-            $request->validated()
-        );
-
-        return response()->json($rapportB2B, 201);
-    }
+    
 
     public function findRapportB2B($id)
     {
@@ -42,6 +35,16 @@ class RapportB2BController extends Controller
         }
 
         return response()->json($rapportB2B);
+    }
+
+    public function createRapportB2B(StoreRapportB2BRequest $request)
+    {
+        $rapportB2B = $this->rapportB2BService->createRapportB2B(
+            $request->validated(),
+            $request->file('sary')
+        );
+
+        return response()->json($rapportB2B, 201);
     }
     
 }

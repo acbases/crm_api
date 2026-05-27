@@ -17,10 +17,10 @@ class StoreRapportB2BRequest extends FormRequest
             'idvisite' => ['required', 'integer', 'min:1', 'exists:visite,id'],
             'description' => ['nullable', 'string'],
             'action_a_faire' => ['nullable', 'string'],
-            'sary' => ['nullable', 'string'],
             'prochaine_visite' => ['nullable', 'date'],
             'statut' => ['nullable', 'integer', 'min:1',],
             'idcorrespondant' => ['nullable', 'integer', 'exists:correspondant,id'],
+            'sary' => ['required', 'file', 'max:10240'],
         ];
     }
 }

@@ -34,5 +34,6 @@ class VisiteService
     public function getVisiteByIdUtilisateur($id)
     {
         return $this->visiteRepository->getVisiteByIdUtilisateur($id);
+        
     }
 }
