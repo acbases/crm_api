@@ -22,6 +22,18 @@ class CorrespondantClientController extends Controller
 
         return response()->json($correspondantClient, 201);
     }
+    public function getCorrespondantClientByIdClient($id)
+    {
+        $correspondantClients = $this->correspondantClientService->getCorrespondantClientByIdClient($id);
+
+        if ($correspondantClients->isEmpty()) {
+            return response()->json([
+                'message' => 'No correspondant clients found for this client',
+            ], 404);
+        }
+
+        return response()->json($correspondantClients, 200);
+    }
 
     
 }
