@@ -11,7 +11,10 @@ class CorrespondantClientRepository
         return CorrespondantClient::create($data);
     }
     public function getCorrespondantClientByIdClient($id){
-        return CorrespondantClient::where('idclient', $id)->get();
+        return CorrespondantClient::where('idclient', $id)->with([
+            // 'client', 
+            'correspondant'
+            ])->get();
     }
 
 }
