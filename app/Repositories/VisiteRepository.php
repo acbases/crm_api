@@ -25,6 +25,24 @@ class VisiteRepository
         return Visite::create($data);
     }
 
+    public function update($id, array $data)
+    {
+        $visite = Visite::find($id);
+
+        if (! $visite) {
+            return null;
+        }
+
+        $visite->update($data);
+
+        // return $visite->fresh([
+        //     'client.categorieClient',
+        //     'categorieVisite',
+        //     'typeVisite',
+        // ]);
+        return $visite->fresh();
+    }
+
     public function getVisiteByIdClient($id){
         return Visite::where('idclient', $id)->with([
             'client.categorieClient', 

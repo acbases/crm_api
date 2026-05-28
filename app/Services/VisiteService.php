@@ -22,6 +22,12 @@ class VisiteService
     {
         return $this->visiteRepository->create($data);
     }
+
+    public function updateVisite($id, array $data)
+    {
+        return $this->visiteRepository->update($id, $data);
+    }
+
     public function findVisite($id)
     {
         return $this->visiteRepository->find($id);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreVisiteRequest;
+use App\Http\Requests\UpdateVisiteRequest;
 use App\Services\VisiteService;
 
 class VisiteController extends Controller
@@ -29,6 +30,22 @@ class VisiteController extends Controller
         );
 
         return response()->json($visite, 201);
+    }
+
+    public function updateVisite(UpdateVisiteRequest $request, $id)
+    {
+        $visite = $this->visiteService->updateVisite(
+            $id,
+            $request->validated()
+        );
+
+        if (! $visite) {
+            return response()->json([
+                'message' => 'Visite not found',
+            ], 404);
+        }
+
+        return response()->json($visite);
     }
 
     public function findVisite($id)
