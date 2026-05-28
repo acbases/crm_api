@@ -20,4 +20,10 @@ class RapportB2BRepository
     {
         return RapportB2B::create($data);
     }
+    public function getRapportB2BByIdVisite($id){
+        return RapportB2B::where('idvisite', $id)->with([
+            'visite',
+            'correspondant'
+        ])->get();
+    }
 }

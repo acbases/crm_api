@@ -33,5 +33,9 @@ class RapportB2BService
 
         return $this->rapportB2BRepository->create($data);
     }
+    public function getRapportB2BByIdVisite($id)
+    {
+        return $this->rapportB2BRepository->getRapportB2BByIdVisite($id);
+    }
 
 }
