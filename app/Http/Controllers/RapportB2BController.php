@@ -39,6 +39,7 @@ class RapportB2BController extends Controller
 
     public function createRapportB2B(StoreRapportB2BRequest $request)
     {
+        // dd($request->validated());
         $rapportB2B = $this->rapportB2BService->createRapportB2B(
             $request->validated(),
             $request->file('sary')
