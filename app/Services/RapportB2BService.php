@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Services;
-
 use App\Repositories\RapportB2BRepository;
 use Illuminate\Http\UploadedFile;
 use Exception;
