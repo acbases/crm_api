@@ -20,7 +20,7 @@ class SlackService
         }
 
         // Example using a standard HTTP client (like Guzzle or Laravel Http facade)
-        Http::post($this->webhookUrl, [
+        Http::withoutVerifying()->post($this->webhookUrl, [
             'text' => $message
         ]);
     }
