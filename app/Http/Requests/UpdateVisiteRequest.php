@@ -18,7 +18,7 @@ class UpdateVisiteRequest extends FormRequest
             'idutilisateur' => ['nullable', 'integer', 'min:1', 'exists:utilisateur,id'],
             'idcategorie' => ['nullable', 'integer', 'min:1', 'exists:categorie_visite,id'],
             'date' => ['nullable', 'date'],
-            'statut' => ['required', 'integer', 'min:1',],
+            'statut' => ['required', 'integer', 'min:0',],
             'type' => ['nullable', 'integer', 'min:1',],
             'idtype' => ['nullable', 'integer', 'min:1', 'exists:type_visite,id'],
             'object' => ['nullable', 'string'],
