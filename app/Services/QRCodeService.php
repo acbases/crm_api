@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\QRCodeRepository;
-use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\Writer\PngWriter;
 
 class QRCodeService
@@ -15,12 +15,6 @@ class QRCodeService
         $this->qrCodeRepository = $qrCodeRepository;
     }
 
-    /**
-     * Generate a QR code image for a specific client (PNG format).
-     *
-     * @param int $id
-     * @return string|null
-     */
     public function generateClientQRCode($id)
     {
         $client = $this->qrCodeRepository->getClientForQRCode($id);
@@ -38,17 +32,12 @@ class QRCodeService
 
         $jsonContent = json_encode($data);
 
-        // Create QR code
-        // $qrCode = QrCode::create($jsonContent)
-        //     ->setSize(300)
-        //     ->setMargin(10);
-        $qrCode = new QrCode($jsonContent);
-
-        $qrCode->setSize(300);
-        $qrCode->setMargin(10);
-
-        $writer = new PngWriter();
-        $result = $writer->write($qrCode);
+        $result = Builder::create()
+            ->writer(new PngWriter())
+            ->data($jsonContent)
+            ->size(300)
+            ->margin(10)
+            ->build();
 
         return $result->getString();
     }
