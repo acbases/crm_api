@@ -39,9 +39,13 @@ class QRCodeService
         $jsonContent = json_encode($data);
 
         // Create QR code
-        $qrCode = QrCode::create($jsonContent)
-            ->setSize(300)
-            ->setMargin(10);
+        // $qrCode = QrCode::create($jsonContent)
+        //     ->setSize(300)
+        //     ->setMargin(10);
+        $qrCode = new QrCode($jsonContent);
+
+        $qrCode->setSize(300);
+        $qrCode->setMargin(10);
 
         $writer = new PngWriter();
         $result = $writer->write($qrCode);
