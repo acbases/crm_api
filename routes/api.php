@@ -12,6 +12,7 @@ use App\Http\Controllers\VisiteController;
 use App\Http\Controllers\TypeVisiteController;
 use App\Http\Controllers\CategorieVisiteController;
 use App\Http\Controllers\RapportB2BController;
+use App\Http\Controllers\QRCodeController;
 
 
 use Illuminate\Support\Facades\Route;
@@ -19,7 +20,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/clients', [ClientController::class, 'getAllClients']);
 Route::post('/client', [ClientController::class, 'createClient']);
 Route::get('/client/{id}', [ClientController::class, 'findClient']);
+Route::get('/client/{id}/qrcode', [QRCodeController::class, 'getClientQRCode']);
+
+
 Route::get('/categorieClients', [CategorieClientController::class, 'getAllCategorieClients']);
+
 Route::get('/agences', [AgenceController::class, 'getAllAgences']);
 // to test 
 Route::get('/fournisseurs', [FournisseurController::class, 'getAllFournisseurs']);
