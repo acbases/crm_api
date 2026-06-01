@@ -14,6 +14,9 @@ use App\Http\Controllers\CategorieVisiteController;
 use App\Http\Controllers\RapportB2BController;
 use App\Http\Controllers\RapportController;
 use App\Http\Controllers\QRCodeController;
+use App\Http\Controllers\RefPrixProduitController;
+use App\Http\Controllers\RecensementPlvController;
+use App\Http\Controllers\VisiteStatutController;
 
 
 use Illuminate\Support\Facades\Route;
@@ -52,6 +55,7 @@ Route::get('/visite', [VisiteController::class, 'getAllVisites']);
 Route::get('/visite/{id}', [VisiteController::class, 'findVisite']);
 Route::get('/visiteByIdClient/{id}', [VisiteController::class, 'getVisiteByIdClient']);
 Route::get('/visiteByIdUtilisateur/{id}', [VisiteController::class, 'getVisiteByIdUtilisateur']);
+Route::get('/visiteStatut0byIdClientAndIdUtilisateur', [VisiteStatutController::class, 'getVisitesByIdClientAndIdUtilisateurAndStatutZero']);
 
 
 
@@ -66,3 +70,11 @@ Route::get('/getRapportB2BByIdVisite/{id}', [RapportB2BController::class, 'getRa
 Route::get('/rapports', [RapportController::class, 'getAllRapports']);
 Route::get('/rapport/{id}', [RapportController::class, 'findRapport']);
 Route::post('/rapport', [RapportController::class, 'createRapport']);
+
+Route::get('/refPrixProduits', [RefPrixProduitController::class, 'getAllRefPrixProduits']);
+Route::get('/refPrixProduit/{id}', [RefPrixProduitController::class, 'findRefPrixProduit']);
+Route::post('/refPrixProduit', [RefPrixProduitController::class, 'createRefPrixProduit']);
+
+Route::get('/recensementPlv', [RecensementPlvController::class, 'getAllRecensementPlv']);
+Route::get('/recensementPlv/{id}', [RecensementPlvController::class, 'findRecensementPlv']);
+Route::post('/recensementPlv', [RecensementPlvController::class, 'createRecensementPlv']);
