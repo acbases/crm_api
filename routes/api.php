@@ -17,6 +17,7 @@ use App\Http\Controllers\QRCodeController;
 use App\Http\Controllers\RefPrixProduitController;
 use App\Http\Controllers\RecensementPlvController;
 use App\Http\Controllers\VisiteStatutController;
+use App\Http\Controllers\ProduitClientController;
 
 
 use Illuminate\Support\Facades\Route;
@@ -79,3 +80,6 @@ Route::get('/recensementPlv', [RecensementPlvController::class, 'getAllRecenseme
 Route::get('/recensementPlv/{id}', [RecensementPlvController::class, 'findRecensementPlv']);
 Route::post('/recensementPlv', [RecensementPlvController::class, 'createRecensementPlv']);
 
+Route::get('/produitClients', [ProduitClientController::class, 'getAllProduitClients']);
+Route::get('/produitClient/{id}', [ProduitClientController::class, 'findProduitClient']);
+Route::post('/produitClient', [ProduitClientController::class, 'createProduitClient']);
