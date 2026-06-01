@@ -1,5 +1,4 @@
 <?php
-
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CategorieClientController;
 use App\Http\Controllers\AgenceController;
@@ -17,9 +16,8 @@ use App\Http\Controllers\QRCodeController;
 use App\Http\Controllers\ProduitController;
 use App\Http\Controllers\RefPrixProduitController;
 use App\Http\Controllers\RecensementPlvController;
-use App\Http\Controllers\VisiteStatutController;
 use App\Http\Controllers\ProduitClientController;
-
+use App\Http\Controllers\PlvController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -27,7 +25,6 @@ Route::get('/clients', [ClientController::class, 'getAllClients']);
 Route::post('/client', [ClientController::class, 'createClient']);
 Route::get('/client/{id}', [ClientController::class, 'findClient']);
 Route::get('/client/{id}/qrcode', [QRCodeController::class, 'getClientQRCode']);
-
 
 Route::get('/categorieClients', [CategorieClientController::class, 'getAllCategorieClients']);
 
@@ -46,7 +43,6 @@ Route::post('/fournisseurClient', [FournisseurClientController::class, 'createFo
 Route::post('/correspondantClient', [CorrespondantClientController::class, 'createCorrespondantClient']);
 Route::get('/correspondantClientByIdClient/{id}', [CorrespondantClientController::class, 'getCorrespondantClientByIdClient']);
 
-
 Route::get('/users', [UserController::class, 'getAllUsers']);
 Route::get('/user/{id}', [UserController::class, 'getUser']);
 Route::post('/user', [UserController::class, 'createUser']);
@@ -57,8 +53,8 @@ Route::get('/visite', [VisiteController::class, 'getAllVisites']);
 Route::get('/visite/{id}', [VisiteController::class, 'findVisite']);
 Route::get('/visiteByIdClient/{id}', [VisiteController::class, 'getVisiteByIdClient']);
 Route::get('/visiteByIdUtilisateur/{id}', [VisiteController::class, 'getVisiteByIdUtilisateur']);
-Route::get('/visiteStatut0byIdClientAndIdUtilisateur', [VisiteStatutController::class, 'getVisitesByIdClientAndIdUtilisateurAndStatutZero']);
-
+Route::get('/visiteStatut0byIdClientAndIdUtilisateur', [VisiteController::class, 'getVisitesByIdClientAndIdUtilisateurAndStatutZero']);
+Route::get('/visiteDetails/{id}', [VisiteController::class, 'getVisiteDetailsByIdVisite']);
 
 
 Route::get('/typeVisites', [TypeVisiteController::class, 'getAllTypeVisites']);
@@ -88,3 +84,7 @@ Route::post('/recensementPlv', [RecensementPlvController::class, 'createRecensem
 Route::get('/produitClients', [ProduitClientController::class, 'getAllProduitClients']);
 Route::get('/produitClient/{id}', [ProduitClientController::class, 'findProduitClient']);
 Route::post('/produitClient', [ProduitClientController::class, 'createProduitClient']);
+
+Route::get('/plvs', [PlvController::class, 'getAllPlvs']);
+Route::get('/plv/{id}', [PlvController::class, 'findPlv']);
+Route::post('/plv', [PlvController::class, 'createPlv']);

@@ -40,6 +40,14 @@ class VisiteService
     public function getVisiteByIdUtilisateur($id)
     {
         return $this->visiteRepository->getVisiteByIdUtilisateur($id);
-        
+    }
+    public function getVisitesByIdClientAndIdUtilisateurAndStatutZero($idClient, $idUtilisateur)
+    {
+        return $this->visiteRepository->getVisitesByIdClientAndIdUtilisateurAndStatutZero($idClient, $idUtilisateur);
+    }
+
+    public function getVisiteDetailsByIdVisite($id)
+    {
+        return $this->visiteRepository->getVisiteDetailsByIdVisite($id);
     }
 }

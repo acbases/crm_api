@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreVisiteRequest;
 use App\Http\Requests\UpdateVisiteRequest;
 use App\Services\VisiteService;
+use Illuminate\Http\Request;
 
 class VisiteController extends Controller
 {
@@ -39,7 +40,7 @@ class VisiteController extends Controller
             $request->validated()
         );
 
-        if (! $visite) {
+        if (!$visite) {
             return response()->json([
                 'message' => 'Visite not found',
             ], 404);
@@ -52,7 +53,7 @@ class VisiteController extends Controller
     {
         $visite = $this->visiteService->findVisite($id);
 
-        if (! $visite) {
+        if (!$visite) {
             return response()->json([
                 'message' => 'Visite not found',
             ], 404);
@@ -84,4 +85,42 @@ class VisiteController extends Controller
 
         return response()->json($visites);
     }
+     public function getVisitesByIdClientAndIdUtilisateurAndStatutZero(Request $request)
+    {
+        $idClient = $request->query('idClient');
+        $idUtilisateur = $request->query('idUtilisateur');
+
+        if ($idClient === null || $idUtilisateur === null) {
+            return response()->json([
+                'message' => 'idClient and idUtilisateur are required query parameters',
+            ], 422);
+        }
+
+        $visites = $this->visiteService->getVisitesByIdClientAndIdUtilisateurAndStatutZero(
+            $idClient,
+            $idUtilisateur
+        );
+
+        if ($visites->isEmpty()) {
+            return response()->json([
+                'message' => 'No visites found for this client, utilisateur and statut 0',
+            ], 404);
+        }
+
+        return response()->json($visites);
+    }
+    public function getVisiteDetailsByIdVisite($id)
+    {
+        $visiteDetails = $this->visiteService->getVisiteDetailsByIdVisite($id);
+
+        if (!$visiteDetails) {
+            return response()->json([
+                'message' => 'Visite details not found',
+            ], 404);
+        }
+
+        return response()->json($visiteDetails);
+    }
 }
+
+

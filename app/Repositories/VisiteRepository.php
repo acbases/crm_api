@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\VisiteDetails;
 use App\Models\Visite;
 
 class VisiteRepository
@@ -57,5 +58,21 @@ class VisiteRepository
             'typeVisite'
             ])->get();
     }
-    
+    public function getVisitesByIdClientAndIdUtilisateurAndStatutZero($idClient, $idUtilisateur)
+    {
+        return Visite::where('idclient', $idClient)
+            ->where('idutilisateur', $idUtilisateur)
+            ->where('statut', 0)
+            ->with([
+                'client.categorieClient',
+                'categorieVisite',
+                'typeVisite',
+            ])
+            ->get();
+    }
+    public function getVisiteDetailsByIdVisite($id)
+    {
+        // 2. Query the view model just like a regular table
+        return VisiteDetails::where('id_visite', $id)->first();
+    }
 }
