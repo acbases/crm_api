@@ -5,6 +5,8 @@ namespace App\Services;
 use App\Repositories\QRCodeRepository;
 use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\Writer\PngWriter;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Color\Color;
 
 class QRCodeService
 {
@@ -24,20 +26,22 @@ class QRCodeService
         }
 
         $data = [
-            'id' => $client->id,
-            'nom' => $client->nom,
-            'latitude' => (float) $client->latitude,
+            'id'        => $client->id,
+            'nom'       => $client->nom,
+            'latitude'  => (float) $client->latitude,
             'longitude' => (float) $client->longitude,
         ];
 
         $jsonContent = json_encode($data);
 
-        $result = Builder::create()
-            ->writer(new PngWriter())
-            ->data($jsonContent)
-            ->size(300)
-            ->margin(10)
-            ->build();
+        $builder = new Builder(
+            writer: new PngWriter(),
+            data: $jsonContent,
+            size: 300,
+            margin: 10,
+        );
+
+        $result = $builder->build();
 
         return $result->getString();
     }

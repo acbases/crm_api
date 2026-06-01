@@ -12,6 +12,7 @@ use App\Http\Controllers\VisiteController;
 use App\Http\Controllers\TypeVisiteController;
 use App\Http\Controllers\CategorieVisiteController;
 use App\Http\Controllers\RapportB2BController;
+use App\Http\Controllers\RapportController;
 use App\Http\Controllers\QRCodeController;
 
 
@@ -61,3 +62,7 @@ Route::get('/rapportB2B', [RapportB2BController::class, 'getAllRapportB2B']);
 Route::get('/rapportB2B/{id}', [RapportB2BController::class, 'findRapportB2B']);
 Route::post('/rapportB2B', [RapportB2BController::class, 'createRapportB2B']);
 Route::get('/getRapportB2BByIdVisite/{id}', [RapportB2BController::class, 'getRapportB2BByIdVisite']);
+
+Route::get('/rapports', [RapportController::class, 'getAllRapports']);
+Route::get('/rapport/{id}', [RapportController::class, 'findRapport']);
+Route::post('/rapport', [RapportController::class, 'createRapport']);
