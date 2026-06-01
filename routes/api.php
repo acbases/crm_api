@@ -78,3 +78,4 @@ Route::post('/refPrixProduit', [RefPrixProduitController::class, 'createRefPrixP
 Route::get('/recensementPlv', [RecensementPlvController::class, 'getAllRecensementPlv']);
 Route::get('/recensementPlv/{id}', [RecensementPlvController::class, 'findRecensementPlv']);
 Route::post('/recensementPlv', [RecensementPlvController::class, 'createRecensementPlv']);
+
