@@ -14,7 +14,7 @@ class StoreRefPrixProduitRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'idvisite' => ['required', 'integer', 'exists:visite,id'],
+            'idvisite' => ['required', 'integer', 'exists:visite,id'],                                                                                  
             'idproduit' => ['required', 'integer', 'exists:produit_client,id'],
             'prix_achat' => ['nullable', 'numeric'],
             'prix_vente_gros' => ['nullable', 'numeric'],

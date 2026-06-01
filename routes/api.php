@@ -14,6 +14,7 @@ use App\Http\Controllers\CategorieVisiteController;
 use App\Http\Controllers\RapportB2BController;
 use App\Http\Controllers\RapportController;
 use App\Http\Controllers\QRCodeController;
+use App\Http\Controllers\ProduitController;
 use App\Http\Controllers\RefPrixProduitController;
 use App\Http\Controllers\RecensementPlvController;
 use App\Http\Controllers\VisiteStatutController;
@@ -75,6 +76,10 @@ Route::post('/rapport', [RapportController::class, 'createRapport']);
 Route::get('/refPrixProduits', [RefPrixProduitController::class, 'getAllRefPrixProduits']);
 Route::get('/refPrixProduit/{id}', [RefPrixProduitController::class, 'findRefPrixProduit']);
 Route::post('/refPrixProduit', [RefPrixProduitController::class, 'createRefPrixProduit']);
+
+Route::get('/produits', [ProduitController::class, 'getAllProduits']);
+Route::get('/produit/{id}', [ProduitController::class, 'findProduit']);
+Route::post('/produit', [ProduitController::class, 'createProduit']);
 
 Route::get('/recensementPlv', [RecensementPlvController::class, 'getAllRecensementPlv']);
 Route::get('/recensementPlv/{id}', [RecensementPlvController::class, 'findRecensementPlv']);
