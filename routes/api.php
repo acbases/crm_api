@@ -1,4 +1,5 @@
 <?php
+use App\Http\Controllers\AutreProduitController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CategorieClientController;
 use App\Http\Controllers\AgenceController;
@@ -76,6 +77,10 @@ Route::post('/refPrixProduit', [RefPrixProduitController::class, 'createRefPrixP
 Route::get('/produits', [ProduitController::class, 'getAllProduits']);
 Route::get('/produit/{id}', [ProduitController::class, 'findProduit']);
 Route::post('/produit', [ProduitController::class, 'createProduit']);
+
+Route::get('/autreProduits', [AutreProduitController::class, 'getAllAutreProduits']);
+Route::get('/autreProduit/{id}', [AutreProduitController::class, 'findAutreProduit']);
+Route::post('/autreProduit', [AutreProduitController::class, 'createAutreProduit']);
 
 Route::get('/recensementPlv', [RecensementPlvController::class, 'getAllRecensementPlv']);
 Route::get('/recensementPlv/{id}', [RecensementPlvController::class, 'findRecensementPlv']);
