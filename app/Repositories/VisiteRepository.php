@@ -2,8 +2,9 @@
 
 namespace App\Repositories;
 
-use App\Models\VisiteDetails;
 use App\Models\Visite;
+use App\Models\ViewVisiteDetails;
+use App\Models\ViewVisitePlv;
 
 class VisiteRepository
 {
@@ -70,9 +71,14 @@ class VisiteRepository
             ])
             ->get();
     }
-    public function getVisiteDetailsByIdVisite($id)
+    public function getViewVisiteDetailsByIdVisite($id)
     {
         // 2. Query the view model just like a regular table
-        return VisiteDetails::where('id_visite', $id)->first();
+        return ViewVisiteDetails::where('id_visite', $id)->get();
+    }
+    public function getViewVisitePlvByIdVisite($id)
+    {
+        // 2. Query the view model just like a regular table
+        return ViewVisitePlv::where('id_visite', $id)->get();
     }
 }

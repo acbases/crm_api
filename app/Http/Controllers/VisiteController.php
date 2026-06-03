@@ -85,7 +85,7 @@ class VisiteController extends Controller
 
         return response()->json($visites);
     }
-     public function getVisitesByIdClientAndIdUtilisateurAndStatutZero(Request $request)
+    public function getVisitesByIdClientAndIdUtilisateurAndStatutZero(Request $request)
     {
         $idClient = $request->query('idClient');
         $idUtilisateur = $request->query('idUtilisateur');
@@ -109,9 +109,9 @@ class VisiteController extends Controller
 
         return response()->json($visites);
     }
-    public function getVisiteDetailsByIdVisite($id)
+    public function getViewVisiteDetailsByIdVisite($id)
     {
-        $visiteDetails = $this->visiteService->getVisiteDetailsByIdVisite($id);
+        $visiteDetails = $this->visiteService->getViewVisiteDetailsByIdVisite($id);
 
         if (!$visiteDetails) {
             return response()->json([
@@ -120,6 +120,18 @@ class VisiteController extends Controller
         }
 
         return response()->json($visiteDetails);
+    }
+    public function getViewVisitePlvByIdVisite($id)
+    {
+        $visitePlv = $this->visiteService->getViewVisitePlvByIdVisite($id);
+
+        if (!$visitePlv) {
+            return response()->json([
+                'message' => 'Visite plv not found',
+            ], 404);
+        }
+
+        return response()->json($visitePlv);
     }
 }
 

@@ -46,8 +46,12 @@ class VisiteService
         return $this->visiteRepository->getVisitesByIdClientAndIdUtilisateurAndStatutZero($idClient, $idUtilisateur);
     }
 
-    public function getVisiteDetailsByIdVisite($id)
+    public function getViewVisiteDetailsByIdVisite($id)
     {
-        return $this->visiteRepository->getVisiteDetailsByIdVisite($id);
+        return $this->visiteRepository->getViewVisiteDetailsByIdVisite($id);
+    }
+    public function getViewVisitePlvByIdVisite($id)
+    {
+        return $this->visiteRepository->getViewVisitePlvByIdVisite($id);
     }
 }

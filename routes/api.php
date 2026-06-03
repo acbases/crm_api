@@ -30,6 +30,7 @@ Route::get('/client/{id}/qrcode', [QRCodeController::class, 'getClientQRCode']);
 Route::get('/categorieClients', [CategorieClientController::class, 'getAllCategorieClients']);
 
 Route::get('/agences', [AgenceController::class, 'getAllAgences']);
+Route::post('/agence', [AgenceController::class, 'createAgence']);
 // to test 
 Route::get('/fournisseurs', [FournisseurController::class, 'getAllFournisseurs']);
 Route::get('/fournisseur/{id}', [FournisseurController::class, 'getFournisseur']);
@@ -55,7 +56,8 @@ Route::get('/visite/{id}', [VisiteController::class, 'findVisite']);
 Route::get('/visiteByIdClient/{id}', [VisiteController::class, 'getVisiteByIdClient']);
 Route::get('/visiteByIdUtilisateur/{id}', [VisiteController::class, 'getVisiteByIdUtilisateur']);
 Route::get('/visiteStatut0byIdClientAndIdUtilisateur', [VisiteController::class, 'getVisitesByIdClientAndIdUtilisateurAndStatutZero']);
-Route::get('/visiteDetails/{id}', [VisiteController::class, 'getVisiteDetailsByIdVisite']);
+Route::get('viewVisiteDetails/{id}', [VisiteController::class, 'getViewVisiteDetailsByIdVisite']);
+Route::get('viewVisitePlv/{id}', [VisiteController::class, 'getViewVisitePlvByIdVisite']);
 
 
 Route::get('/typeVisites', [TypeVisiteController::class, 'getAllTypeVisites']);
