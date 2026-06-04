@@ -39,4 +39,8 @@ class RapportService
     {
         return $this->rapportRepository->getVueRapportPlvByIdVisite($id);
     }
+    public function getRapportByIdVisite($id)
+    {
+        return $this->rapportRepository->getRapportByIdVisite($id);
+    }
 }

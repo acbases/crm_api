@@ -38,4 +38,10 @@ class RapportRepository
         // 2. Query the view model just like a regular table
         return VueRapportPlv::where('idvisite', $id)->get();
     }
+
+    public function getRapportByIdVisite($id)
+    {
+        // 2. Query the view model just like a regular table
+        return Rapport::where('idvisite', $id)->get();
+    }
 }

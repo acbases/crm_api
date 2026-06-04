@@ -78,4 +78,17 @@ class RapportController extends Controller
 
         return response()->json($vueRapportPlvByidVisite);
     }
+    public function getRapportByIdVisite($id)
+    {
+        $rapport = $this->rapportService->getRapportByIdVisite($id);
+
+        if (!$rapport) {
+            return response()->json([
+                'message' => 'Rapport not found',
+            ], 404);
+        }
+
+        return response()->json($rapport);
+    }
 }
+             
