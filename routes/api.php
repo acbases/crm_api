@@ -91,7 +91,7 @@ Route::post('/recensementPlv', [RecensementPlvController::class, 'createRecensem
 Route::get('/produitClients', [ProduitClientController::class, 'getAllProduitClients']);
 Route::get('/produitClient/{id}', [ProduitClientController::class, 'findProduitClient']);
 Route::post('/produitClient', [ProduitClientController::class, 'createProduitClient']);
-Route::get('/produitClientByIdClient', [ProduitClientController::class, 'getProduitClientByIdClient']);
+Route::get('/produitClientByIdClient/{id}', [ProduitClientController::class, 'getProduitClientByIdClient']);
 
 Route::get('/plvs', [PlvController::class, 'getAllPlvs']);
 Route::get('/plv/{id}', [PlvController::class, 'findPlv']);
