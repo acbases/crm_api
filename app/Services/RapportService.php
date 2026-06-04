@@ -27,4 +27,16 @@ class RapportService
     {
         return $this->rapportRepository->create($data);
     }
+    public function getVueRapportProduitsByIdVisite($id)
+    {
+        return $this->rapportRepository->getVueRapportProduitsByIdVisite($id);
+    }
+    public function getVueRapportAutresProduitsByIdVisite($id)
+    {
+        return $this->rapportRepository->getVueRapportAutresProduitsByIdVisite($id);
+    }
+    public function getVueRapportPlvByIdVisite($id)
+    {
+        return $this->rapportRepository->getVueRapportPlvByIdVisite($id);
+    }
 }

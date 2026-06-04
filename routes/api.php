@@ -71,6 +71,9 @@ Route::get('/getRapportB2BByIdVisite/{id}', [RapportB2BController::class, 'getRa
 Route::get('/rapports', [RapportController::class, 'getAllRapports']);
 Route::get('/rapport/{id}', [RapportController::class, 'findRapport']);
 Route::post('/rapport', [RapportController::class, 'createRapport']);
+Route::get('/getVueRapportProduitsByIdVisite/{id}', [RapportController::class, 'getVueRapportProduitsByIdVisite']);
+Route::get('/getVueRapportAutresProduitsByIdVisite/{id}', [RapportController::class, 'getVueRapportAutresProduitsByIdVisite']);
+Route::get('/getVueRapportPlvByIdVisite/{id}', [RapportController::class, 'getVueRapportPlvByIdVisite']);
 
 Route::get('/refPrixProduits', [RefPrixProduitController::class, 'getAllRefPrixProduits']);
 Route::get('/refPrixProduit/{id}', [RefPrixProduitController::class, 'findRefPrixProduit']);

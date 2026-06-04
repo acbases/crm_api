@@ -42,4 +42,40 @@ class RapportController extends Controller
 
         return response()->json($rapport, 201);
     }
+    public function getVueRapportProduitsByIdVisite($id)
+    {
+        $vueRapportProduitsByidVisite = $this->rapportService->getVueRapportProduitsByIdVisite($id);
+
+        if (!$vueRapportProduitsByidVisite) {
+            return response()->json([
+                'message' => 'Visite not found',
+            ], 404);
+        }
+
+        return response()->json($vueRapportProduitsByidVisite);
+    }
+    public function getVueRapportAutresProduitsByIdVisite($id)
+    {
+        $vueRapportAutresProduitsByidVisite = $this->rapportService->getVueRapportAutresProduitsByIdVisite($id);
+
+        if (!$vueRapportAutresProduitsByidVisite) {
+            return response()->json([
+                'message' => 'Visite not found',
+            ], 404);
+        }
+
+        return response()->json($vueRapportAutresProduitsByidVisite);
+    }
+    public function getVueRapportPlvByIdVisite($id)
+    {
+        $vueRapportPlvByidVisite = $this->rapportService->getVueRapportPlvByIdVisite($id);
+
+        if (!$vueRapportPlvByidVisite) {
+            return response()->json([
+                'message' => 'Visite not found',
+            ], 404);
+        }
+
+        return response()->json($vueRapportPlvByidVisite);
+    }
 }
