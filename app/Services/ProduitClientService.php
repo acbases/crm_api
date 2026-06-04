@@ -27,4 +27,9 @@ class ProduitClientService
     {
         return $this->produitClientRepository->find($id);
     }
+    public function getProduitClientByIdClient($id)
+    {
+        return $this->produitClientRepository->getProduitClientByIdClient($id);
+    }
+
 }

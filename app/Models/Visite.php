@@ -53,3 +53,4 @@ class Visite extends Model
         return $this->belongsTo(TypeVisite::class, 'idtype', 'id');
     }
 }
+

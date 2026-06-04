@@ -20,4 +20,7 @@ class ProduitClientRepository
     {
         return ProduitClient::create($data);
     }
+    public function getProduitClientByIdClient($id){
+        return ProduitClient::where('idclient', $id)->get();
+    }
 }

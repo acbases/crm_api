@@ -42,4 +42,16 @@ class ProduitClientController extends Controller
 
         return response()->json($produitClient);
     }
+    public function getProduitClientByIdClient($id)
+    {
+        $produitClient = $this->produitClientService->getProduitClientByIdClient($id);
+
+        if (!$produitClient) {
+            return response()->json([
+                'message' => 'ProduitClient not found for this id client'
+            ], 404);
+        }
+
+        return response()->json($produitClient);
+    }
 }
