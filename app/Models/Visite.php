@@ -34,7 +34,7 @@ class Visite extends Model
      */
     public function utilisateur()
     {
-        return $this->belongsTo(Utilisateur::class, 'idutilisateur', 'id');
+        return $this->belongsTo(User::class, 'idutilisateur', 'id');
     }
 
     /**
