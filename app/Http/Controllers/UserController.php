@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Laravel\Sanctum\HasApiTokens;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 
@@ -35,5 +35,26 @@ class UserController extends Controller
         );
 
         return response()->json($user, 201);
+    }
+
+    public function login(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
+
+        $user = $this->userService->login($credentials);
+
+        if ($user) {
+            $token = $user->createToken('auth-token')->plainTextToken;
+            return response()->json([
+                'message' => 'Login successful',
+                'user' => $user,
+                'token' => $token,
+                'token_type' => 'Bearer'
+            ], 200);
+        }
+
+        return response()->json([
+            'message' => 'Invalid credentials'
+        ], 401);
     }
 }

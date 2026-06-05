@@ -20,4 +20,9 @@ class UserRepository
     {
         return User::create($data);
     }
+
+    public function findByEmail($email)
+    {
+        return User::where('email', $email)->first();
+    }
 }

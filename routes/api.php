@@ -48,6 +48,7 @@ Route::get('/correspondantClientByIdClient/{id}', [CorrespondantClientController
 Route::get('/users', [UserController::class, 'getAllUsers']);
 Route::get('/user/{id}', [UserController::class, 'getUser']);
 Route::post('/user', [UserController::class, 'createUser']);
+Route::post('/login', [UserController::class, 'login']);
 
 Route::post('/visite', [VisiteController::class, 'createVisite']);
 Route::put('/visite/{id}', [VisiteController::class, 'updateVisite']);
