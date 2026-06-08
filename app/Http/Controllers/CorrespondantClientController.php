@@ -34,4 +34,11 @@ class CorrespondantClientController extends Controller
 
         return response()->json($correspondantClients, 200);
     }
+    public function getCorrespondantClientById($id)
+    {
+        return response()->json(
+            $this->correspondantClientService->find($id)
+        );
+    }
 }
+

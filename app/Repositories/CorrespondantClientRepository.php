@@ -16,5 +16,9 @@ class CorrespondantClientRepository
             'correspondant'
             ])->get();
     }
+    public function find($id)
+    {
+        return CorrespondantClient::find($id);
+    }
 
 }

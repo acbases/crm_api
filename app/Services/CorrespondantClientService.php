@@ -21,5 +21,9 @@ class CorrespondantClientService
     {
         return $this->correspondantClientRepository->getCorrespondantClientByIdClient($id);
     }
+    public function find($id)
+    {
+        return $this->correspondantClientRepository->find($id);
+    }
 }
 
