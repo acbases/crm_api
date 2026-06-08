@@ -74,15 +74,30 @@ class RapportB2BService
             $recipientAddress = config('mail.rapport_b2b.to.address');
             $recipientName = config('mail.rapport_b2b.to.name');
 
-            if (! empty($recipientAddress)) {
+            if (!empty($recipientAddress)) {
                 try {
+                    logger()->info('Attempting to send Rapport B2B email', [
+                        'recipient' => $recipientAddress,
+                        'rapport_id' => $rapport->id,
+                        'mailer' => config('mail.default'),
+                        'host' => config('mail.mailers.smtp.host'),
+                        'port' => config('mail.mailers.smtp.port'),
+                        'scheme' => config('mail.mailers.smtp.scheme'),
+                        'username' => config('mail.mailers.smtp.username'),
+                    ]);
+
                     Mail::to($recipientAddress, $recipientName)
-                        ->queue(new RapportB2BCreatedMail($rapport));
+                        ->send(new RapportB2BCreatedMail($rapport));
+
+                    logger()->info('Rapport B2B email sent successfully.', [
+                        'rapport_id' => $rapport->id,
+                    ]);
                 } catch (Exception $mailException) {
                     logger()->warning('Failed to send Rapport B2B creation email.', [
                         'rapport_b2b_id' => $rapport->id,
                         'recipient' => $recipientAddress,
                         'error' => $mailException->getMessage(),
+                        'trace' => $mailException->getTraceAsString(),
                     ]);
                 }
             }
