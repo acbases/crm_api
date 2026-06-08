@@ -20,11 +20,13 @@ class Client extends Model
         'quartier',
         'idagence',
         'idcategorie',
+        'status_qrcode',
     ];
 
     protected $casts = [
         'latitude' => 'decimal:8',
         'longitude' => 'decimal:8',
+        'status_qrcode' => 'boolean',
     ];
 
     /**
