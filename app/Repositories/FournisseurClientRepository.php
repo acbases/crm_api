@@ -16,4 +16,9 @@ class FournisseurClientRepository
             'fournisseur'
             ])->get();
     }
+
+     public function find($id)
+    {
+        return FournisseurClient::find($id);
+    }
 }

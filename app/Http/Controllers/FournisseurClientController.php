@@ -33,6 +33,12 @@ class FournisseurClientController extends Controller
         }
         return response()->json($fournisseurClients, 200);
     }
+    public function getFournisseurClientById($id)
+    {
+        return response()->json(
+            $this->fournisseurClientService->find($id)
+        );
+    }
 
     
 }

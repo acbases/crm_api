@@ -21,7 +21,7 @@ class CorrespondantController extends Controller
         );
     }
 
-    public function getCorrespondant($id)
+    public function getCorrespondantById($id)
     {
         return response()->json(
             $this->correspondantService->find($id)
