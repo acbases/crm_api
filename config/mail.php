@@ -45,7 +45,7 @@ return [
             'port' => env('MAIL_PORT', 2525),
             'username' => env('MAIL_USERNAME'),
             'password' => env('MAIL_PASSWORD'),
-            'timeout' => null,
+            'timeout' => env('MAIL_TIMEOUT', 10),
             'local_domain' => env('MAIL_EHLO_DOMAIN', parse_url((string) env('APP_URL', 'http://localhost'), PHP_URL_HOST)),
         ],
 
@@ -97,6 +97,23 @@ return [
             'retry_after' => 60,
         ],
 
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Application Mail Recipients
+    |--------------------------------------------------------------------------
+    |
+    | Custom recipients used by the application for specific notifications.
+    | The Rapport B2B service uses this address when a new report is created.
+    |
+    */
+
+    'rapport_b2b' => [
+        'to' => [
+            'address' => env('MAIL_RAPPORT_B2B_TO_ADDRESS'),
+            'name' => env('MAIL_RAPPORT_B2B_TO_NAME', 'Rapport B2B Notifications'),
+        ],
     ],
 
     /*
