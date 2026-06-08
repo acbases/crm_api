@@ -34,6 +34,4 @@ class CorrespondantClientController extends Controller
 
         return response()->json($correspondantClients, 200);
     }
-
-    
 }

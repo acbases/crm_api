@@ -10,4 +10,10 @@ class FournisseurClientRepository
     {
         return FournisseurClient::create($data);
     }
+    public function getFournisseurClientByIdClient($id){
+        return FournisseurClient::where('idclient', $id)->with([
+            // 'client', 
+            'fournisseur'
+            ])->get();
+    }
 }

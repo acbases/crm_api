@@ -20,4 +20,17 @@ class CorrespondantRepository
     {
         return Correspondant::create($data);
     }
+    public function update($id, array $data)
+    {
+        $correspondant = Correspondant::find($id);
+
+        if (! $correspondant) {
+            return null;
+        }
+
+        $correspondant->update($data);
+
+        return $correspondant->fresh();
+    }
+
 }

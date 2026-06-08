@@ -9,4 +9,13 @@ class FournisseurClient extends Model
     public $timestamps = false;
 
     protected $fillable = ['idfournisseur', 'idclient'];
+    public function client()
+    {
+        return $this->belongsTo(Client::class, 'idclient', 'id');
+    }
+    public function fournisseur()
+    {
+        return $this->belongsTo(Fournisseur::class, 'idfournisseur', 'id');
+    }
+
 }

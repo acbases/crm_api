@@ -27,4 +27,8 @@ class CorrespondantService
     {
         return $this->correspondantRepository->create($data);
     }
+    public function updateCorrespondant($id, array $data)
+    {
+        return $this->correspondantRepository->update($id, $data);
+    }
 }

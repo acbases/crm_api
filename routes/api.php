@@ -39,8 +39,11 @@ Route::post('/fournisseur', [FournisseurController::class, 'createFournisseur'])
 Route::get('/correspondants', [CorrespondantController::class, 'getAllCorrespondants']);
 Route::get('/correspondant/{id}', [CorrespondantController::class, 'getCorrespondant']);
 Route::post('/correspondant', [CorrespondantController::class, 'createCorrespondant']);
+Route::put('/correspondant/{id}', [CorrespondantController::class, 'updateCorrespondant']);
+
 
 Route::post('/fournisseurClient', [FournisseurClientController::class, 'createFournisseurClient']);
+Route::get('/fournisseurClientByIdClient/{id}', [FournisseurClientController::class, 'getFournisseurClientByIdClient']);
 
 Route::post('/correspondantClient', [CorrespondantClientController::class, 'createCorrespondantClient']);
 Route::get('/correspondantClientByIdClient/{id}', [CorrespondantClientController::class, 'getCorrespondantClientByIdClient']);

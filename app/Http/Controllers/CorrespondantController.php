@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\CorrespondantService;
-
+use App\Http\Requests\UpdateCorrespondantRequest;
 class CorrespondantController extends Controller
 {
     protected $correspondantService;
@@ -40,4 +40,14 @@ class CorrespondantController extends Controller
 
         return response()->json($correspondant, 201);
     }
+
+    public function updateCorrespondant($id, UpdateCorrespondantRequest $request)
+    {
+        $data = $request->validated();
+
+        $correspondant = $this->correspondantService->updateCorrespondant($id, $data);
+
+        return response()->json($correspondant);
+    }
+
 }

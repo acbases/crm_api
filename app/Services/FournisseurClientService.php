@@ -17,6 +17,8 @@ class FournisseurClientService
     {
         return $this->fournisseurClientRepository->create($data);
     }
-
-   
+    public function getFournisseurClientByIdClient($id)
+    {
+        return $this->fournisseurClientRepository->getFournisseurClientByIdClient($id);
+    }
 }

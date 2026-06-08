@@ -20,4 +20,5 @@ class FournisseurRepository
     {
         return Fournisseur::create($data);
     }
+    
 }

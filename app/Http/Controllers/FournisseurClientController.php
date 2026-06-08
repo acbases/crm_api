@@ -22,6 +22,17 @@ class FournisseurClientController extends Controller
 
         return response()->json($fournisseurClient, 201);
     }
+    public function getFournisseurClientByIdClient($id)
+    {
+        $fournisseurClients = $this->fournisseurClientService->getFournisseurClientByIdClient($id);
+
+        if ($fournisseurClients->isEmpty()) {
+            return response()->json([
+                'message' => 'No fournisseur clients found for this client',
+            ], 404);
+        }
+        return response()->json($fournisseurClients, 200);
+    }
 
     
 }

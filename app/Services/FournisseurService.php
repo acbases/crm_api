@@ -27,4 +27,5 @@ class FournisseurService
     {
         return $this->fournisseurRepository->create($data);
     }
+    
 }
