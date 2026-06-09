@@ -40,5 +40,19 @@ class CorrespondantClientController extends Controller
             $this->correspondantClientService->find($id)
         );
     }
+    public function deleteCorrespondantClient($id)
+    {
+        $deleted = $this->correspondantClientService->delete($id);
+
+        if ($deleted) {
+            return response()->json([
+                'message' => 'Correspondant client deleted successfully',
+            ], 200);
+        }
+
+        return response()->json([
+            'message' => 'Correspondant client not found',
+        ], 404);
+    }
 }
 

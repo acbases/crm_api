@@ -25,5 +25,9 @@ class CorrespondantClientService
     {
         return $this->correspondantClientRepository->find($id);
     }
+    public function delete($id)
+    {
+        return $this->correspondantClientRepository->delete($id);
+    }
 }
 

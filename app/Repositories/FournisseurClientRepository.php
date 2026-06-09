@@ -22,4 +22,13 @@ class FournisseurClientRepository
     {
         return FournisseurClient::find($id);
     }
+    public function delete($id)
+    {
+        $fournisseurClient = FournisseurClient::find($id);
+
+        if ($fournisseurClient) {
+            return $fournisseurClient->delete();
+        }
+        return false;
+    }
 }

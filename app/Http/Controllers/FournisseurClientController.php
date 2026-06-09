@@ -39,6 +39,19 @@ class FournisseurClientController extends Controller
             $this->fournisseurClientService->find($id)
         );
     }
+    public function deleteFournisseurClient($id)
+    {
+        $deleted = $this->fournisseurClientService->delete($id);
 
-    
+        if ($deleted) {
+            return response()->json([
+                'message' => 'Fournisseur client deleted successfully',
+            ], 200);
+        }
+
+        return response()->json([
+            'message' => 'Fournisseur client not found',
+        ], 404);
+    }
 }
+

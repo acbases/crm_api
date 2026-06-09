@@ -20,5 +20,13 @@ class FournisseurRepository
     {
         return Fournisseur::create($data);
     }
+    public function update($id, array $data){
+        $fournisseur = Fournisseur::find($id);
+        if(! $fournisseur){
+            return null;
+        }
+        $fournisseur->update($data);
+        return $fournisseur->fresh();
+    }
     
 }

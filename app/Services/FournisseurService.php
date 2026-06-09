@@ -27,5 +27,8 @@ class FournisseurService
     {
         return $this->fournisseurRepository->create($data);
     }
-    
+    public function updateFournisseur($id, array $data)
+    {
+        return $this->fournisseurRepository->update($id, $data);
+    }
 }

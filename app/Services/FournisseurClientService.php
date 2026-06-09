@@ -25,4 +25,8 @@ class FournisseurClientService
     {
         return $this->fournisseurClientRepository->find($id);
     }
+    public function delete($id)
+    {
+        return $this->fournisseurClientRepository->delete($id);
+    }
 }
