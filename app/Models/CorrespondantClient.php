@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 class CorrespondantClient extends Model
 {
     protected $table = 'correspondant_client';
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $fillable = ['idclient', 'idcorrespondant'];
     public function client()

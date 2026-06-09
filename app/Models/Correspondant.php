@@ -8,7 +8,7 @@ class Correspondant extends Model
 {
     protected $table = 'correspondant';
     protected $primaryKey = 'id';
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $fillable = ['nom', 'poste', 'contact'];
 

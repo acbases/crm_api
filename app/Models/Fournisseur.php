@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Fournisseur extends Model
 {
     protected $table = 'fournisseur';
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $fillable = ['nom'];
 

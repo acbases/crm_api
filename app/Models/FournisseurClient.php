@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 class FournisseurClient extends Model
 {
     protected $table = 'fournisseur_client';
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $fillable = ['idfournisseur', 'idclient'];
     public function client()

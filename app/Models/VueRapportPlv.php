@@ -10,7 +10,7 @@ class VueRapportPlv extends Model
 
     protected $primaryKey = 'idvisite';
 
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $guarded = [];
 }

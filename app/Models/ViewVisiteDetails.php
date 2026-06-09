@@ -10,7 +10,7 @@ class ViewVisiteDetails extends Model
 
     protected $primaryKey = 'id_visite';
 
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $guarded = [];
 }
