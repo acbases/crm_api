@@ -27,3 +27,4 @@ class Produit extends Model
                     ->withPivot('id');
     }
 }
+

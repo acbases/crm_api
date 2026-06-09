@@ -10,7 +10,11 @@ class VisiteRepository
 {
     public function all()
     {
-        return Visite::all();
+        return Visite::with([
+            'client.categorieClient', 
+            'categorieVisite',
+            'typeVisite'
+            ])->get();
     }
 
     public function find($id)
