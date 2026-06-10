@@ -15,7 +15,7 @@ class StoreVisiteRequest extends FormRequest
     {
         return [
             'idclient' => ['required', 'integer', 'min:1', 'exists:client,id'],
-            'idutilisateur' => ['required', 'integer', 'min:1', 'exists:utilisateur,id'],
+            'idutilisateur' => ['required', 'integer', 'min:1', 'exists:users,id'],
             'idcategorie' => ['required', 'integer', 'min:1', 'exists:categorie_visite,id'],
             'date' => ['required', 'date'],
             'statut' => ['nullable', 'integer', 'min:0',],
