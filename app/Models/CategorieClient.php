@@ -14,6 +14,7 @@ class CategorieClient extends Model
 
     protected $fillable = [
         'intitule',
+        'statut'
     ];
 
     /**

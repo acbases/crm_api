@@ -14,5 +14,6 @@ class CategorieVisite extends Model
 
     protected $fillable = [
         'intitule',
+        'statut'
     ];
 }
