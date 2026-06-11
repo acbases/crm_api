@@ -20,4 +20,25 @@ class ClientRepository
     {
         return Client::create($data);
     }
+    public function update($id, array $data)
+    {
+        $client = Client::find($id);
+
+        if (! $client) {
+            return null;
+        }
+
+        $client->update($data);
+        return $client->fresh();
+    }
+    public function getUniqueZones()
+    {
+        return Client::query()
+            ->select('zone')
+            ->whereNotNull('zone')
+            ->distinct()
+            ->orderBy('zone')
+            ->pluck('zone');
+    }
+
 }

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreClientRequest;
+use App\Http\Requests\UpdateClientRequest;
+
 use App\Services\ClientService;
 
 class ClientController extends Controller
@@ -41,6 +43,27 @@ class ClientController extends Controller
         }
 
         return response()->json($client);
+    }
+    public function updateClient(UpdateClientRequest $request, $id)
+    {
+        $client = $this->clientService->updateClient(
+            $id,
+            $request->validated()
+        );
+
+        if (!$client) {
+            return response()->json([
+                'message' => 'Client not found',
+            ], 404);
+        }
+
+        return response()->json($client);
+    }
+    public function getUniqueZones()
+    {
+        $zones = $this->clientService->getUniqueZones();
+
+        return response()->json($zones);
     }
 
 }

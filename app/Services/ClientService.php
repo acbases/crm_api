@@ -27,4 +27,12 @@ class ClientService
     {
         return $this->clientRepository->find($id);
     }
+    public function updateClient($id, array $data)
+    {
+        return $this->clientRepository->update($id, $data);
+    }
+    public function getUniqueZones()
+    {
+        return $this->clientRepository->getUniqueZones();
+    }
 }

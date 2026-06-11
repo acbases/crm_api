@@ -15,8 +15,8 @@ class Visite extends Model
         'idutilisateur',
         'idcategorie',
         'date',
-        'statut',
-        'type',
+        'statut', // 
+        'type', // 0 planifié ou 1 non 
         'idtype',
         'object',
     ];

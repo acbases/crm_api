@@ -15,11 +15,11 @@ class UpdateVisiteRequest extends FormRequest
     {
         return [
             'idclient' => ['nullable', 'integer', 'min:1', 'exists:client,id'],
-            'idutilisateur' => ['nullable', 'integer', 'min:1', 'exists:utilisateur,id'],
+            'idutilisateur' => ['nullable', 'integer', 'min:1', 'exists:users,id'],
             'idcategorie' => ['nullable', 'integer', 'min:1', 'exists:categorie_visite,id'],
             'date' => ['nullable', 'date'],
             'statut' => ['nullable', 'integer', 'min:0',],
-            'type' => ['nullable', 'integer', 'min:1',],
+            'type' => ['nullable', 'integer'],
             'idtype' => ['nullable', 'integer', 'min:1', 'exists:type_visite,id'],
             'object' => ['nullable', 'string'],
         ];
