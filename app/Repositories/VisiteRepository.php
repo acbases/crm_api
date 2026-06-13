@@ -13,7 +13,8 @@ class VisiteRepository
         return Visite::with([
             'client.categorieClient', 
             'categorieVisite',
-            'typeVisite'
+            'typeVisite',
+            'utilisateur'
             ])->get();
     }
 
@@ -22,7 +23,8 @@ class VisiteRepository
         return Visite::with([
             'client.categorieClient', 
             'categorieVisite',
-            'typeVisite'
+            'typeVisite',
+            'utilisateur'
             ])->find($id);
     }
 

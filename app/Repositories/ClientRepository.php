@@ -29,6 +29,16 @@ class ClientRepository
         }
 
         $client->update($data);
+//         {
+//     "nom": "ClientTest",
+//     "latitude": 2.12121200,
+//     "longitude": 2.25255000,
+//     "zone": "Rn7",
+//     "quartier": "Ambohimanarina",
+//     "idagence": 2,
+//     "idcategorie": 14,
+//     "status_qrcode": true
+// }
         return $client->fresh();
     }
     public function getUniqueZones()
