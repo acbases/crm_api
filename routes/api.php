@@ -28,6 +28,7 @@ Route::get('/client/{id}', [ClientController::class, 'findClient']);
 Route::get('/client/{id}/qrcode', [QRCodeController::class, 'getClientQRCode']);
 Route::put('/client/{id}', [ClientController::class, 'updateClient']);
 Route::get('/zone', [ClientController::class, 'getUniqueZones']);
+Route::get('/quartier', [ClientController::class, 'getUniqueQuartiers']);
 
 Route::get('/categorieClients', [CategorieClientController::class, 'getAllCategorieClients']);
 

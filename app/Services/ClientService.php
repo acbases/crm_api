@@ -35,4 +35,8 @@ class ClientService
     {
         return $this->clientRepository->getUniqueZones();
     }
+    public function getUniqueQuartiers()
+    {
+        return $this->clientRepository->getUniqueQuartiers();
+    }
 }

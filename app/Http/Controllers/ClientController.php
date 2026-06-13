@@ -65,5 +65,11 @@ class ClientController extends Controller
 
         return response()->json($zones);
     }
+    public function getUniqueQuartiers()
+    {
+        $quartiers = $this->clientService->getUniqueQuartiers();
+
+        return response()->json($quartiers);
+    }
 
 }

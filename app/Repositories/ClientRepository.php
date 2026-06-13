@@ -8,7 +8,7 @@ class ClientRepository
 {
     public function all()
     {
-        return Client::all();
+        return Client::with(['agence', 'categorieClient'])->get();
     }
 
     public function find($id)
@@ -24,7 +24,7 @@ class ClientRepository
     {
         $client = Client::find($id);
 
-        if (! $client) {
+        if (!$client) {
             return null;
         }
 
@@ -40,5 +40,15 @@ class ClientRepository
             ->orderBy('zone')
             ->pluck('zone');
     }
+    public function getUniqueQuartiers()
+    {
+        return Client::query()
+            ->select('quartier')
+            ->whereNotNull('quartier')
+            ->distinct()
+            ->orderBy('quartier')
+            ->pluck('quartier');
+    }
+
 
 }
