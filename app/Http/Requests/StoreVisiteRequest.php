@@ -14,13 +14,13 @@ class StoreVisiteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'idclient' => ['required', 'integer', 'min:1', 'exists:client,id'],
-            'idutilisateur' => ['required', 'integer', 'min:1', 'exists:users,id'],
-            'idcategorie' => ['required', 'integer', 'min:1', 'exists:categorie_visite,id'],
+            'idclient' => ['required', 'integer', 'exists:client,id'],
+            'idutilisateur' => ['required', 'integer', 'exists:users,id'],
+            'idcategorie' => ['required', 'integer', 'exists:categorie_visite,id'],
             'date' => ['required', 'date'],
-            'statut' => ['nullable', 'integer', 'min:0',],
-            'type' => ['nullable', 'integer', 'min:1',],
-            'idtype' => ['nullable', 'integer', 'min:1', 'exists:type_visite,id'],
+            'statut' => ['nullable', 'integer',],
+            'type' => ['nullable', 'integer',],
+            'idtype' => ['nullable', 'integer', 'exists:type_visite,id'],
             'object' => ['nullable', 'string'],
         ];
     }
