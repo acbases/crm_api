@@ -50,13 +50,6 @@ class RapportB2BController extends Controller
     public function getRapportB2BByIdVisite($id)
     {
         $rapportB2Bs = $this->rapportB2BService->getRapportB2BByIdVisite($id);
-
-        if ($rapportB2Bs->isEmpty()) {
-            return response()->json([
-                'message' => 'No rapports found for this visit',
-            ], 404);
-        }
-
         return response()->json($rapportB2Bs);
     }
 }
