@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Support\Facades\Storage;
 class Rapport extends Model
 {
     protected $table = 'rapport';
@@ -16,8 +16,20 @@ class Rapport extends Model
         'idvisite',
         'description',
         'autre_plv',
+        'sary'
     ];
+    public function getSaryAttribute($value)
+    {
+        if (!$value) {
+            return null;
+        }
 
+        if (filter_var($value, FILTER_VALIDATE_URL)) {
+            return $value;
+        }
+
+        return Storage::disk('public')->url($value);
+    }
     /**
      * Relation with visite table
      */

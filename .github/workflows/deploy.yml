@@ -32,7 +32,7 @@ jobs:
             ./ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:${{ secrets.SERVER_PATH }}
 
       - name: Notify Slack
-        if: always()
+        if: always()  
         run: |
           if [ "${{ job.status }}" = "success" ]; then
             STATUS="✅ Deploy succeeded"

@@ -37,7 +37,8 @@ class RapportController extends Controller
     public function createRapport(StoreRapportRequest $request)
     {
         $rapport = $this->rapportService->createRapport(
-            $request->validated()
+            $request->validated(),
+            $request->file('sary')
         );
 
         return response()->json($rapport, 201);

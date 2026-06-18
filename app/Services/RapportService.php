@@ -3,7 +3,8 @@
 namespace App\Services;
 
 use App\Repositories\RapportRepository;
-
+use Illuminate\Http\UploadedFile;
+use Exception;
 class RapportService
 {
     protected $rapportRepository;
@@ -23,9 +24,21 @@ class RapportService
         return $this->rapportRepository->find($id);
     }
 
-    public function createRapport(array $data)
+    public function createRapport(array $data, ?UploadedFile $sary = null)
     {
-        return $this->rapportRepository->create($data);
+        try {
+
+            if ($sary) {
+                $data['sary'] = $sary->store('rapportRetail/files', 'public');
+            }
+            $rapport = $this->rapportRepository->create($data);
+
+            return $rapport;
+
+        } catch (Exception $e) {
+
+            throw $e;
+        }
     }
     public function getVueRapportProduitsByIdVisite($id)
     {

@@ -17,6 +17,7 @@ class StoreRapportRequest extends FormRequest
             'idvisite' => ['required', 'integer', 'exists:visite,id'],
             'description' => ['nullable', 'string'],
             'autre_plv' => ['nullable', 'string'],
+            'sary' => ['nullable', 'file'],
         ];
     }
 }
