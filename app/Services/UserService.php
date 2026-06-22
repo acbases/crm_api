@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
@@ -37,4 +38,36 @@ class UserService
 
         return null;
     }
+    public function updatePassword(
+        string $email,
+        string $currentPassword,
+        string $newPassword
+    ) {
+        $user = $this->userRepository->findByEmail($email);
+
+        if (!$user) {
+            return [
+                'success' => false,
+                'message' => 'User not found'
+            ];
+        }
+
+        if (!Hash::check($currentPassword, $user->password)) {
+            return [
+                'success' => false,
+                'message' => 'Current password is incorrect'
+            ];
+        }
+
+        $this->userRepository->updatePassword(
+            $user,
+            Hash::make($newPassword)
+        );
+
+        return [
+            'success' => true,
+            'message' => 'Password updated successfully'
+        ];
+    }
 }
+

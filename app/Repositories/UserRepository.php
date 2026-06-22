@@ -25,4 +25,11 @@ class UserRepository
     {
         return User::where('email', $email)->first();
     }
+    public function updatePassword(User $user, string $hashedPassword)
+    {
+        $user->password = $hashedPassword;
+        $user->save();
+
+        return $user;
+    }
 }

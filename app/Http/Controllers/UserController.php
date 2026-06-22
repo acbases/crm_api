@@ -57,4 +57,28 @@ class UserController extends Controller
             'message' => 'Invalid credentials'
         ], 401);
     }
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'current_password' => 'required',
+            'new_password' => 'required'
+        ]);
+
+        $result = $this->userService->updatePassword(
+            $request->email,
+            $request->current_password,
+            $request->new_password
+        );
+
+        if (!$result['success']) {
+            return response()->json([
+                'message' => $result['message']
+            ], 400);
+        }
+
+        return response()->json([
+            'message' => $result['message']
+        ], 200);
+    }
 }
