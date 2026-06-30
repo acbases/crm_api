@@ -5,27 +5,28 @@ namespace App\Repositories;
 use App\Models\Visite;
 use App\Models\ViewVisiteDetails;
 use App\Models\ViewVisitePlv;
+use PhpParser\Node\Stmt\TryCatch;
 
 class VisiteRepository
 {
     public function all()
     {
         return Visite::with([
-            'client.categorieClient', 
+            'client.categorieClient',
             'categorieVisite',
             'typeVisite',
             'utilisateur'
-            ])->get();
+        ])->get();
     }
 
     public function find($id)
     {
         return Visite::with([
-            'client.categorieClient', 
+            'client.categorieClient',
             'categorieVisite',
             'typeVisite',
             'utilisateur'
-            ])->find($id);
+        ])->find($id);
     }
 
     public function create(array $data)
@@ -37,33 +38,33 @@ class VisiteRepository
     {
         $visite = Visite::find($id);
 
-        if (! $visite) {
-            return null;
+        try {
+            $visite->update($data);
+            return $visite->fresh();
+        } catch (\Throwable $e) {
+            dd([
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+            ]);
         }
-
-        $visite->update($data);
-
-        // return $visite->fresh([
-        //     'client.categorieClient',
-        //     'categorieVisite',
-        //     'typeVisite',
-        // ]);
-        return $visite->fresh();
     }
 
-    public function getVisiteByIdClient($id){
+    public function getVisiteByIdClient($id)
+    {
         return Visite::where('idclient', $id)->with([
-            'client.categorieClient', 
-            'categorieVisite', 
-            'typeVisite'
-            ])->get();
-    }
-    public function getVisiteByIdUtilisateur($id){
-        return Visite::where('idutilisateur', $id)->with([
-            'client.categorieClient', 
+            'client.categorieClient',
             'categorieVisite',
             'typeVisite'
-            ])->get();
+        ])->get();
+    }
+    public function getVisiteByIdUtilisateur($id)
+    {
+        return Visite::where('idutilisateur', $id)->with([
+            'client.categorieClient',
+            'categorieVisite',
+            'typeVisite'
+        ])->get();
     }
     public function getVisitesByIdClientAndIdUtilisateurAndStatutZero($idClient, $idUtilisateur)
     {

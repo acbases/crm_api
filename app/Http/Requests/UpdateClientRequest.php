@@ -15,8 +15,8 @@ class UpdateClientRequest extends FormRequest
     {
         return [
             'nom' => ['nullable', 'string'],
-            'latitude' => ['nullable', 'integer'],
-            'longitude' => ['nullable', 'integer'],
+            'latitude' => ['nullable', 'numeric'],
+            'longitude' => ['nullable', 'numeric'],
             'zone' => ['nullable', 'string'],
             'quartier' => ['nullable', 'string'],
             'idagence' => ['nullable', 'integer'],
