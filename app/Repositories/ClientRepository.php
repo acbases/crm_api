@@ -25,22 +25,17 @@ class ClientRepository
     {
         $client = Client::find($id);
 
-        if (!$client) {
-            return null;
-        }
+        try {
+            $client->update($data);
 
-        $client->update($data);
-//         {
-//     "nom": "ClientTest",
-//     "latitude": 2.12121200,
-//     "longitude": 2.25255000,
-//     "zone": "Rn7",
-//     "quartier": "Ambohimanarina",
-//     "idagence": 2,
-//     "idcategorie": 14,
-//     "status_qrcode": true
-// }
-        return $client->fresh();
+            return $client->fresh();
+        } catch (\Throwable $e) {
+            dd([
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+            ]);
+        }
     }
     public function getUniqueZones()
     {
