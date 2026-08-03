@@ -20,6 +20,7 @@ class ClientRepository
     {
         return Client::create($data);
     }
+    
     public function update($id, array $data)
     {
         $client = Client::find($id);
