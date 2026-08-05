@@ -21,11 +21,31 @@ class UserRepository
         return User::create($data);
     }
 
+    public function updateRole($id, $role)
+    {
+        $user = User::find($id);
+
+        if (!$user) {
+            return null;
+        }
+
+        $user->role_crm = $role;
+        $user->save();
+
+        return $user;
+    }
+
     public function findByEmail($email)
     {
         return User::where('email', $email)->first();
     }
-    public function updatePassword(User $user, string $hashedPassword)
+
+    public function findByMatricule($matricule)
+    {
+        return User::where('matricule', $matricule)->first();
+    }
+
+    public function updatePassword(User $user, $hashedPassword)
     {
         $user->password = $hashedPassword;
         $user->save();

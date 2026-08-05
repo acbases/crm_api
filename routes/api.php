@@ -58,9 +58,11 @@ Route::delete('/correspondantClient/{id}', [CorrespondantClientController::class
 
 Route::get('/users', [UserController::class, 'getAllUsers']);
 Route::get('/user/{id}', [UserController::class, 'getUser']);
+Route::get('/userByMatricule/{matricule}', [UserController::class, 'getUserByMatricule']);
 Route::post('/user', [UserController::class, 'createUser']);
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/update-password', [UserController::class, 'updatePassword']);
+Route::post('/update-role', [UserController::class, 'updateRole']);
 
 Route::post('/visite', [VisiteController::class, 'createVisite']);
 Route::put('/visite/{id}', [VisiteController::class, 'updateVisite']);

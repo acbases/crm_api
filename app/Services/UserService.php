@@ -25,6 +25,16 @@ class UserService
         return $this->userRepository->find($id);
     }
 
+    public function findByMatricule($matricule)
+    {
+        return $this->userRepository->findByMatricule($matricule);
+    }
+
+    public function updateRole($id, $role)
+    {
+        return $this->userRepository->updateRole($id, $role);
+    }
+
     public function create(array $data)
     {
         return $this->userRepository->create($data);

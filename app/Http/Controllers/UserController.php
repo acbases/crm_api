@@ -19,13 +19,27 @@ class UserController extends Controller
         return response()->json(
             $this->userService->all()
         );
-    }
+    }    
 
     public function getUser($id)
     {
         return response()->json(
             $this->userService->find($id)
         );
+    }
+
+    public function getUserByMatricule($matricule)
+    {
+        return response()->json(
+            $this->userService->findByMatricule($matricule)
+        );
+    }
+
+    public function updateRole(Request $request)
+    {
+        $user = $this->userService->updateRole($request->input('id'), $request->input('role_crm'));
+
+        return response()->json($user);
     }
 
     public function createUser(Request $request)
