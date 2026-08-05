@@ -37,7 +37,18 @@ class UserController extends Controller
 
     public function updateRole(Request $request)
     {
+        $request->validate([
+            'id' => 'required|integer|exists:users,id',
+            'role_crm' => 'required|string|max:100',
+        ]);
+
         $user = $this->userService->updateRole($request->input('id'), $request->input('role_crm'));
+
+        if (!$user) {
+            return response()->json([
+                'message' => 'User not found'
+            ], 404);
+        }
 
         return response()->json($user);
     }
