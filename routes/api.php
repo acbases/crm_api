@@ -63,6 +63,7 @@ Route::post('/user', [UserController::class, 'createUser']);
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/update-password', [UserController::class, 'updatePassword']);
 Route::post('/update-role', [UserController::class, 'updateRole']);
+Route::post('/users/import-allpro-rh', [UserController::class, 'importAllproRhUsers']);
 
 Route::post('/visite', [VisiteController::class, 'createVisite']);
 Route::put('/visite/{id}', [VisiteController::class, 'updateVisite']);

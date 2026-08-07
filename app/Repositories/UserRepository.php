@@ -45,6 +45,13 @@ class UserRepository
         return User::where('matricule', $matricule)->first();
     }
 
+    public function findExistingMatricules(array $matricules)
+    {
+        return User::whereIn('matricule', $matricules)
+            ->pluck('matricule')
+            ->all();
+    }
+
     public function updatePassword(User $user, $hashedPassword)
     {
         $user->password = $hashedPassword;

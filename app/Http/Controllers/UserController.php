@@ -82,6 +82,13 @@ class UserController extends Controller
             'message' => 'Invalid credentials'
         ], 401);
     }
+    public function importAllproRhUsers()
+    {
+        $result = $this->userService->importFromAllproRh();
+
+        return response()->json($result);
+    }
+
     public function updatePassword(Request $request)
     {
         $request->validate([

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Repositories\AllproRhRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -10,9 +11,12 @@ class UserService
 {
     protected $userRepository;
 
-    public function __construct(UserRepository $userRepository)
+    protected $allproRhRepository;
+
+    public function __construct(UserRepository $userRepository, AllproRhRepository $allproRhRepository)
     {
         $this->userRepository = $userRepository;
+        $this->allproRhRepository = $allproRhRepository;
     }
 
     public function all()
@@ -77,6 +81,50 @@ class UserService
         return [
             'success' => true,
             'message' => 'Password updated successfully'
+        ];
+    }
+
+    public function importFromAllproRh()
+    {
+        $eligibleUsers = $this->allproRhRepository->getEligibleCommerciaux();
+
+        $matricules = $eligibleUsers->pluck('matricule')->filter()->values()->all();
+
+        $existingMatricules = $this->userRepository->findExistingMatricules($matricules);
+
+        $missingUsers = $eligibleUsers->reject(function ($rhUser) use ($existingMatricules) {
+            return in_array($rhUser->matricule, $existingMatricules, true);
+        });
+
+        $insertedUsers = [];
+        $errors = [];
+
+        foreach ($missingUsers as $rhUser) {
+            try {
+                $insertedUsers[] = $this->userRepository->create([
+                    'name' => $rhUser->nom,
+                    'firstname' => $rhUser->prenom,
+                    'poste' => $rhUser->fonction_poste,
+                    'matricule' => $rhUser->matricule,
+                    'email' => $rhUser->email,
+                    'password' => 'Aze12qsd',
+                    'statut' => true,
+                    'role_crm' => 'utilisateur',
+                ]);
+            } catch (\Throwable $e) {
+                $errors[] = [
+                    'matricule' => $rhUser->matricule,
+                    'message' => $e->getMessage(),
+                ];
+            }
+        }
+
+        return [
+            'total_eligible' => $eligibleUsers->count(),
+            'already_existing' => $eligibleUsers->count() - $missingUsers->count(),
+            'inserted' => count($insertedUsers),
+            'inserted_users' => $insertedUsers,
+            'errors' => $errors,
         ];
     }
 }
