@@ -71,13 +71,19 @@ class RapportB2BService
 
             $rapport = $this->rapportB2BRepository->create($data);
 
-            $recipientAddress = config('mail.rapport_b2b.to.address');
+            $recipientAddresses = array_filter(
+                array_map(
+                    'trim',
+                    explode(',', config('mail.rapport_b2b.to.address', ''))
+                )
+            );
+
             $recipientName = config('mail.rapport_b2b.to.name');
 
-            if (!empty($recipientAddress)) {
+            if (!empty($recipientAddresses)) {
                 try {
                     logger()->info('Attempting to send Rapport B2B email', [
-                        'recipient' => $recipientAddress,
+                        'recipients' => $recipientAddresses,
                         'rapport_id' => $rapport->id,
                         'mailer' => config('mail.default'),
                         'host' => config('mail.mailers.smtp.host'),
@@ -86,16 +92,18 @@ class RapportB2BService
                         'username' => config('mail.mailers.smtp.username'),
                     ]);
 
-                    Mail::to($recipientAddress, $recipientName)
+                    Mail::to($recipientAddresses)
                         ->send(new RapportB2BCreatedMail($rapport));
 
                     logger()->info('Rapport B2B email sent successfully.', [
                         'rapport_id' => $rapport->id,
+                        'recipients' => $recipientAddresses,
                     ]);
+
                 } catch (Exception $mailException) {
                     logger()->warning('Failed to send Rapport B2B creation email.', [
                         'rapport_b2b_id' => $rapport->id,
-                        'recipient' => $recipientAddress,
+                        'recipients' => $recipientAddresses,
                         'error' => $mailException->getMessage(),
                         'trace' => $mailException->getTraceAsString(),
                     ]);

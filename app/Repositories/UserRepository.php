@@ -59,4 +59,23 @@ class UserRepository
 
         return $user;
     }
+
+    public function findUserActif()
+    {
+        return User::where('statut', true)->get();
+    }
+
+    public function updateUserStatut($id)
+    {
+        $user = User::find($id);
+
+        if (!$user) {
+            return null;
+        }
+
+        $user->statut = false;
+        $user->save();
+
+        return $user;
+    }
 }

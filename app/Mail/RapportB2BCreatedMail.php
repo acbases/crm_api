@@ -20,7 +20,7 @@ class RapportB2BCreatedMail extends Mailable
      */
     public function __construct(RapportB2B $rapportB2B)
     {
-        $this->rapportB2B = $rapportB2B;
+        $this->rapportB2B = $rapportB2B->loadMissing(['visite.utilisateur', 'visite.client']);
     }
 
     /**
@@ -29,7 +29,7 @@ class RapportB2BCreatedMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'New Rapport B2B Created #'.$this->rapportB2B->id,
+            subject: 'Nouveau Rapport B2B ',
         );
     }
 

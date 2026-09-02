@@ -127,5 +127,15 @@ class UserService
             'errors' => $errors,
         ];
     }
+
+    public function findUserActif()
+    {
+        return $this->userRepository->findUserActif();
+    }
+
+    public function updateUserStatut($id)
+    {
+        return $this->userRepository->updateUserStatut($id);
+    }
 }
 

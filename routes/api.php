@@ -57,12 +57,14 @@ Route::get('/correspondantClient/{id}', [CorrespondantClientController::class, '
 Route::delete('/correspondantClient/{id}', [CorrespondantClientController::class, 'deleteCorrespondantClient']);
 
 Route::get('/users', [UserController::class, 'getAllUsers']);
+Route::get('/users-actif', [UserController::class, 'getAllUsersActif']);
 Route::get('/user/{id}', [UserController::class, 'getUser']);
 Route::get('/userByMatricule/{matricule}', [UserController::class, 'getUserByMatricule']);
 Route::post('/user', [UserController::class, 'createUser']);
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/update-password', [UserController::class, 'updatePassword']);
 Route::post('/update-role', [UserController::class, 'updateRole']);
+Route::post('/delete-user', [UserController::class, 'updateStatutUser']);
 Route::post('/users/import-allpro-rh', [UserController::class, 'importAllproRhUsers']);
 
 Route::post('/visite', [VisiteController::class, 'createVisite']);

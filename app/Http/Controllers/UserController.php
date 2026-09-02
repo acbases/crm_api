@@ -21,6 +21,30 @@ class UserController extends Controller
         );
     }    
 
+    public function getAllUsersActif()
+    {
+        return response()->json(
+            $this->userService->findUserActif()
+        );
+    } 
+
+    public function updateStatutUser(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer|exists:users,id',
+        ]);
+
+        $user = $this->userService->updateUserStatut($request->input('id'));
+
+        if (!$user) {
+            return response()->json([
+                'message' => 'User not found'
+            ], 404);
+        }
+
+        return response()->json($user);
+    }
+
     public function getUser($id)
     {
         return response()->json(
