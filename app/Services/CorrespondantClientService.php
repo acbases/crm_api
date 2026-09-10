@@ -21,6 +21,10 @@ class CorrespondantClientService
     {
         return $this->correspondantClientRepository->getCorrespondantClientByIdClient($id);
     }
+    public function all()
+    {
+        return $this->correspondantClientRepository->all();
+    }
     public function find($id)
     {
         return $this->correspondantClientRepository->find($id);
@@ -28,6 +32,11 @@ class CorrespondantClientService
     public function delete($id)
     {
         return $this->correspondantClientRepository->delete($id);
+    }
+
+    public function updateStatut($id)
+    {
+        return $this->correspondantClientRepository->updateStatut($id);
     }
 }
 

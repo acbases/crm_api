@@ -23,10 +23,12 @@ use App\Http\Controllers\PlvController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/clients', [ClientController::class, 'getAllClients']);
+Route::get('/clients-actif', [ClientController::class, 'getClientsActif']);
 Route::post('/client', [ClientController::class, 'createClient']);
 Route::get('/client/{id}', [ClientController::class, 'findClient']);
 Route::get('/client/{id}/qrcode', [QRCodeController::class, 'getClientQRCode']);
 Route::put('/client/{id}', [ClientController::class, 'updateClient']);
+Route::post('/client/{id}/statut', [ClientController::class, 'updateStatut']);
 Route::get('/zone', [ClientController::class, 'getUniqueZones']);
 Route::get('/quartier', [ClientController::class, 'getUniqueQuartiers']);
 
@@ -47,14 +49,18 @@ Route::put('/correspondant/{id}', [CorrespondantController::class, 'updateCorres
 
 
 Route::post('/fournisseurClient', [FournisseurClientController::class, 'createFournisseurClient']);
+Route::get('/fournisseurClients', [FournisseurClientController::class, 'getAllFournisseurClients']);
 Route::get('/fournisseurClientByIdClient/{id}', [FournisseurClientController::class, 'getFournisseurClientByIdClient']);
 Route::get('/fournisseurClient/{id}', [FournisseurClientController::class, 'getFournisseurClientById']);
 Route::delete('/fournisseurClient/{id}', [FournisseurClientController::class, 'deleteFournisseurClient']);
+Route::post('/fournisseurClient/{id}', [FournisseurClientController::class, 'updateStatut']);
 
 Route::post('/correspondantClient', [CorrespondantClientController::class, 'createCorrespondantClient']);
+Route::get('/correspondantClients', [CorrespondantClientController::class, 'getAllCorrespondantClients']);
 Route::get('/correspondantClientByIdClient/{id}', [CorrespondantClientController::class, 'getCorrespondantClientByIdClient']);
 Route::get('/correspondantClient/{id}', [CorrespondantClientController::class, 'getCorrespondantClientById']);
 Route::delete('/correspondantClient/{id}', [CorrespondantClientController::class, 'deleteCorrespondantClient']);
+Route::post('/correspondantClient/{id}', [CorrespondantClientController::class, 'updateStatut']);
 
 Route::get('/users', [UserController::class, 'getAllUsers']);
 Route::get('/users-actif', [UserController::class, 'getAllUsersActif']);
@@ -69,7 +75,9 @@ Route::post('/users/import-allpro-rh', [UserController::class, 'importAllproRhUs
 
 Route::post('/visite', [VisiteController::class, 'createVisite']);
 Route::put('/visite/{id}', [VisiteController::class, 'updateVisite']);
+Route::post('/visite/{id}/delete', [VisiteController::class, 'deleteVisite']);
 Route::get('/visite', [VisiteController::class, 'getAllVisites']);
+Route::get('/visites-actif', [VisiteController::class, 'getVisitesActif']);
 Route::get('/visite/{id}', [VisiteController::class, 'findVisite']);
 Route::get('/visiteByIdClient/{id}', [VisiteController::class, 'getVisiteByIdClient']);
 Route::get('/visiteByIdUtilisateur/{id}', [VisiteController::class, 'getVisiteByIdUtilisateur']);

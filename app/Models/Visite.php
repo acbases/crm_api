@@ -19,6 +19,7 @@ class Visite extends Model
         'type', // 0 planifié ou 1 non 
         'idtype',
         'object',
+        'delete',
     ];
 
     /**

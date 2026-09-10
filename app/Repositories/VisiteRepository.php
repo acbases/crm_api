@@ -88,4 +88,28 @@ class VisiteRepository
         // 2. Query the view model just like a regular table
         return ViewVisitePlv::where('id_visite', $id)->get();
     }
+
+    public function getVisitesActif()
+    {
+        return Visite::where('delete', false)->with([
+            'client.categorieClient',
+            'categorieVisite',
+            'typeVisite',
+            'utilisateur'
+        ])->get();
+    }
+
+    public function deleteVisite($id)
+    {
+        $visite = Visite::find($id);
+
+        if (!$visite) {
+            return null;
+        }
+
+        $visite->delete = true;
+        $visite->save();
+
+        return $visite;
+    }
 }

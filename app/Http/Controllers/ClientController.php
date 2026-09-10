@@ -18,9 +18,16 @@ class ClientController extends Controller
 
     public function getAllClients()
     {
-    
+
         return response()->json(
             $this->clientService->getAllClients()
+        );
+    }
+
+    public function getClientsActif()
+    {
+        return response()->json(
+            $this->clientService->getClientsActif()
         );
     }
 
@@ -70,6 +77,22 @@ class ClientController extends Controller
         $quartiers = $this->clientService->getUniqueQuartiers();
 
         return response()->json($quartiers);
+    }
+
+    public function updateStatut($id)
+    {
+        $updatedClient = $this->clientService->updateStatut($id);
+
+        if ($updatedClient) {
+            return response()->json([
+                'message' => 'Statut updated successfully',
+                'client' => $updatedClient,
+            ], 200);
+        }
+
+        return response()->json([
+            'message' => 'Client not found',
+        ], 404);
     }
 
 }

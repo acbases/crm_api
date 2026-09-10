@@ -11,6 +11,11 @@ class ClientRepository
         return Client::with(['agence', 'categorieClient'])->get();
     }
 
+    public function getClientsActif()
+    {
+        return Client::with(['agence', 'categorieClient'])->where('statut', true)->get();
+    }
+
     public function find($id)
     {
         return Client::with(['agence', 'categorieClient'])->find($id);
@@ -56,5 +61,18 @@ class ClientRepository
             ->pluck('quartier');
     }
 
+    public function updateStatut($id)
+    {
+        $client = Client::find($id);
+
+        if (!$client) {
+            return null;
+        }
+
+        $client->statut = false;
+        $client->save();
+
+        return $client;
+    }
 
 }

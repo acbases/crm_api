@@ -22,6 +22,12 @@ class FournisseurClientController extends Controller
 
         return response()->json($fournisseurClient, 201);
     }
+    public function getAllFournisseurClients()
+    {
+        return response()->json(
+            $this->fournisseurClientService->all()
+        );
+    }
     public function getFournisseurClientByIdClient($id)
     {
         $fournisseurClients = $this->fournisseurClientService->getFournisseurClientByIdClient($id);
@@ -46,6 +52,22 @@ class FournisseurClientController extends Controller
         if ($deleted) {
             return response()->json([
                 'message' => 'Fournisseur client deleted successfully',
+            ], 200);
+        }
+
+        return response()->json([
+            'message' => 'Fournisseur client not found',
+        ], 404);
+    }
+
+    public function updateStatut($id)
+    {
+        $updatedFournisseurClient = $this->fournisseurClientService->updateStatut($id);
+
+        if ($updatedFournisseurClient) {
+            return response()->json([
+                'message' => 'Fournisseur client statut updated successfully',
+                'fournisseur_client' => $updatedFournisseurClient,
             ], 200);
         }
 

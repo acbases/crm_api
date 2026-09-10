@@ -22,6 +22,12 @@ class CorrespondantClientController extends Controller
 
         return response()->json($correspondantClient, 201);
     }
+    public function getAllCorrespondantClients()
+    {
+        return response()->json(
+            $this->correspondantClientService->all()
+        );
+    }
     public function getCorrespondantClientByIdClient($id)
     {
         $correspondantClients = $this->correspondantClientService->getCorrespondantClientByIdClient($id);
@@ -47,6 +53,22 @@ class CorrespondantClientController extends Controller
         if ($deleted) {
             return response()->json([
                 'message' => 'Correspondant client deleted successfully',
+            ], 200);
+        }
+
+        return response()->json([
+            'message' => 'Correspondant client not found',
+        ], 404);
+    }
+
+    public function updateStatut($id)
+    {
+        $updatedCorrespondantClient = $this->correspondantClientService->updateStatut($id);
+
+        if ($updatedCorrespondantClient) {
+            return response()->json([
+                'message' => 'Statut updated successfully',
+                'correspondant_client' => $updatedCorrespondantClient,
             ], 200);
         }
 

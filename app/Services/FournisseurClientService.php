@@ -21,6 +21,10 @@ class FournisseurClientService
     {
         return $this->fournisseurClientRepository->getFournisseurClientByIdClient($id);
     }
+    public function all()
+    {
+        return $this->fournisseurClientRepository->all();
+    }
     public function find($id)
     {
         return $this->fournisseurClientRepository->find($id);
@@ -28,5 +32,10 @@ class FournisseurClientService
     public function delete($id)
     {
         return $this->fournisseurClientRepository->delete($id);
+    }
+
+    public function updateStatut($id)
+    {
+        return $this->fournisseurClientRepository->updateStatut($id);
     }
 }

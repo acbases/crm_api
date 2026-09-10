@@ -8,7 +8,7 @@ class FournisseurClient extends Model
     protected $table = 'fournisseur_client';
     public $timestamps = true;
 
-    protected $fillable = ['idfournisseur', 'idclient'];
+    protected $fillable = ['idfournisseur', 'idclient', 'statut'];
     public function client()
     {
         return $this->belongsTo(Client::class, 'idclient', 'id');

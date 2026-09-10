@@ -18,6 +18,7 @@ class UserRepository
 
     public function create(array $data)
     {
+        $data['statut'] = $data['statut'] ?? true;
         return User::create($data);
     }
 

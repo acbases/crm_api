@@ -21,6 +21,7 @@ class Client extends Model
         'idagence',
         'idcategorie',
         'status_qrcode',
+        'statut',
     ];
 
     protected $casts = [

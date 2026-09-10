@@ -133,6 +133,29 @@ class VisiteController extends Controller
 
         return response()->json($visitePlv);
     }
+
+    public function getVisitesActif()
+    {
+        return response()->json(
+            $this->visiteService->getVisitesActif()
+        );
+    }
+
+    public function deleteVisite($id)
+    {
+        $visite = $this->visiteService->deleteVisite($id);
+
+        if ($visite) {
+            return response()->json([
+                'message' => 'Visite deleted successfully',
+                'visite' => $visite,
+            ], 200);
+        }
+
+        return response()->json([
+            'message' => 'Visite not found',
+        ], 404);
+    }
 }
 
 

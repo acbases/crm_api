@@ -54,4 +54,14 @@ class VisiteService
     {
         return $this->visiteRepository->getViewVisitePlvByIdVisite($id);
     }
+
+    public function getVisitesActif()
+    {
+        return $this->visiteRepository->getVisitesActif();
+    }
+
+    public function deleteVisite($id)
+    {
+        return $this->visiteRepository->deleteVisite($id);
+    }
 }

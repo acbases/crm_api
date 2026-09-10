@@ -8,7 +8,7 @@ class CorrespondantClient extends Model
     protected $table = 'correspondant_client';
     public $timestamps = true;
 
-    protected $fillable = ['idclient', 'idcorrespondant'];
+    protected $fillable = ['idclient', 'idcorrespondant', 'statut'];
     public function client()
     {
         return $this->belongsTo(Client::class, 'idclient', 'id');

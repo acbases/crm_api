@@ -18,6 +18,11 @@ class ClientService
         return $this->clientRepository->all();
     }
 
+    public function getClientsActif()
+    {
+        return $this->clientRepository->getClientsActif();
+    }
+
     public function createClient(array $data)
     {
         return $this->clientRepository->create($data);
@@ -38,5 +43,10 @@ class ClientService
     public function getUniqueQuartiers()
     {
         return $this->clientRepository->getUniqueQuartiers();
+    }
+
+    public function updateStatut($id)
+    {
+        return $this->clientRepository->updateStatut($id);
     }
 }
