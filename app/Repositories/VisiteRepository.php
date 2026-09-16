@@ -31,9 +31,10 @@ class VisiteRepository
 
     public function create(array $data)
     {
+        $data['delete'] = $data['delete'] ?? false;
+
         return Visite::create($data);
     }
-
     public function update($id, array $data)
     {
         $visite = Visite::find($id);
