@@ -23,7 +23,7 @@ class ClientRepository
 
     public function create(array $data)
     {
-        $data['status'] = $data['status'] ?? true;
+        $data['statut'] = $data['statut'] ?? true;
 
         return Client::create($data);
     }
