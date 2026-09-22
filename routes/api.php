@@ -1,6 +1,7 @@
 <?php
 use App\Http\Controllers\AutreProduitController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CategorieClientController;
 use App\Http\Controllers\AgenceController;
 use App\Http\Controllers\FournisseurController;
@@ -126,3 +127,7 @@ Route::get('/produitClientByIdClient/{id}', [ProduitClientController::class, 'ge
 Route::get('/plvs', [PlvController::class, 'getAllPlvs']);
 Route::get('/plv/{id}', [PlvController::class, 'findPlv']);
 Route::post('/plv', [PlvController::class, 'createPlv']);
+
+Route::get('/dashboard/produits-stats', [DashboardController::class, 'getProduitStats']);
+Route::get('/dashboard/produit-detail', [DashboardController::class, 'getProduitDetail']);
+Route::get('/dashboard/plv-stats', [DashboardController::class, 'getPlvStats']);
