@@ -19,23 +19,23 @@ class PlvStatsRepository
      * recorded at least one PLV, a ranking of catalogue PLV by field presence, and a
      * tally of the free-text "autre_plv" field recorded on the visit report.
      */
-    public function getStats(?int $annee = null, ?int $mois = null): array
+    public function getStats(?int $annee = null, ?int $mois = null, ?int $agenceId = null): array
     {
         $totalVisitesAvecRapport = $this->restreindreAuxVisitesRetail($this->filtrerParPeriode(
             Rapport::query()->join('visite', 'rapport.idvisite', '=', 'visite.id'),
             'visite.date',
             $annee,
             $mois
-        ))->distinct('rapport.idvisite')->count('rapport.idvisite');
+        ), $agenceId)->distinct('rapport.idvisite')->count('rapport.idvisite');
 
-        $classement = $this->getClassementPlv($annee, $mois, $totalVisitesAvecRapport);
+        $classement = $this->getClassementPlv($annee, $mois, $agenceId, $totalVisitesAvecRapport);
 
         $totalVisitesAvecPlv = $this->restreindreAuxVisitesRetail($this->filtrerParPeriode(
             RecensementPlv::query()->join('visite', 'recensement_plv.idvisite', '=', 'visite.id'),
             'visite.date',
             $annee,
             $mois
-        ))->distinct('recensement_plv.idvisite')->count('recensement_plv.idvisite');
+        ), $agenceId)->distinct('recensement_plv.idvisite')->count('recensement_plv.idvisite');
 
         return [
             'total_visites_avec_rapport' => $totalVisitesAvecRapport,
@@ -43,11 +43,11 @@ class PlvStatsRepository
             'taux_presence_global' => $this->pourcentage($totalVisitesAvecPlv, $totalVisitesAvecRapport),
             'plv_le_plus_present' => $classement[0] ?? null,
             'classement_plv' => $classement,
-            'autre_plv' => $this->getAutrePlv($annee, $mois),
+            'autre_plv' => $this->getAutrePlv($annee, $mois, $agenceId),
         ];
     }
 
-    private function getClassementPlv(?int $annee, ?int $mois, int $totalVisitesAvecRapport): array
+    private function getClassementPlv(?int $annee, ?int $mois, ?int $agenceId, int $totalVisitesAvecRapport): array
     {
         return $this->restreindreAuxVisitesRetail($this->filtrerParPeriode(
             RecensementPlv::query()
@@ -56,7 +56,7 @@ class PlvStatsRepository
             'visite.date',
             $annee,
             $mois
-        ))
+        ), $agenceId)
             ->selectRaw('
                 plv.id as plv_id,
                 plv.nom as nom,
@@ -78,14 +78,14 @@ class PlvStatsRepository
     }
 
     /** Tally of the free-text "autre_plv" field, grouped by case/whitespace-normalized value. */
-    private function getAutrePlv(?int $annee, ?int $mois): array
+    private function getAutrePlv(?int $annee, ?int $mois, ?int $agenceId): array
     {
         return $this->restreindreAuxVisitesRetail($this->filtrerParPeriode(
             Rapport::query()->join('visite', 'rapport.idvisite', '=', 'visite.id'),
             'visite.date',
             $annee,
             $mois
-        ))
+        ), $agenceId)
             ->whereNotNull('rapport.autre_plv')
             ->where('rapport.autre_plv', '!=', '')
             ->pluck('rapport.autre_plv')
@@ -107,12 +107,14 @@ class PlvStatsRepository
      * (rapportb2b) that has no PLV survey, so they're excluded here rather than
      * showing up as false "no PLV" data points.
      */
-    private function restreindreAuxVisitesRetail(Builder $query): Builder
+    private function restreindreAuxVisitesRetail(Builder $query, ?int $agenceId = null): Builder
     {
-        return $query
+        $query = $query
             ->join('client', 'visite.idclient', '=', 'client.id')
             ->join('categorie_client', 'client.idcategorie', '=', 'categorie_client.id')
             ->where('categorie_client.statut', 'RETAIL');
+
+        return $this->filtrerParAgence($query, $agenceId, clientDejaJoint: true);
     }
 
     /** Groups values that only differ by case or surrounding/repeated whitespace. */

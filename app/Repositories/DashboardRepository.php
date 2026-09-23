@@ -21,24 +21,24 @@ class DashboardRepository
      * and "autres produits" (free-text products). Optionally restricted to a given
      * year and/or month, based on the date of the visite each price was recorded on.
      */
-    public function getPrixMoyenParType(?int $annee = null, ?int $mois = null): array
+    public function getPrixMoyenParType(?int $annee = null, ?int $mois = null, ?int $agenceId = null): array
     {
         $result = [];
 
         foreach (self::TYPES_PRIX as $type) {
-            $catalogue = $this->filtrerParPeriode(
+            $catalogue = $this->filtrerParAgence($this->filtrerParPeriode(
                 RefPrixProduit::query()->join('visite', 'ref_prix_produit.idvisite', '=', 'visite.id'),
                 'visite.date',
                 $annee,
                 $mois
-            )->selectRaw("SUM(ref_prix_produit.$type) as somme, COUNT(ref_prix_produit.$type) as total")->first();
+            ), $agenceId)->selectRaw("SUM(ref_prix_produit.$type) as somme, COUNT(ref_prix_produit.$type) as total")->first();
 
-            $autres = $this->filtrerParPeriode(
+            $autres = $this->filtrerParAgence($this->filtrerParPeriode(
                 AutreProduit::query()->join('visite', 'autre_produit.idvisite', '=', 'visite.id'),
                 'visite.date',
                 $annee,
                 $mois
-            )->selectRaw("SUM(autre_produit.$type) as somme, COUNT(autre_produit.$type) as total")->first();
+            ), $agenceId)->selectRaw("SUM(autre_produit.$type) as somme, COUNT(autre_produit.$type) as total")->first();
 
             $somme = (float) $catalogue->somme + (float) $autres->somme;
             $total = (int) $catalogue->total + (int) $autres->total;
@@ -54,11 +54,17 @@ class DashboardRepository
      * produits" grouped by normalized name, so that 'Ciment', 'ciment', 'CIMENT' and
      * 'cIment' are counted as a single product instead of four low-volume ones.
      */
-    public function getClassementProduits(?int $annee = null, ?int $mois = null): array
+    public function getClassementProduits(?int $annee = null, ?int $mois = null, ?int $agenceId = null): array
     {
-        return $this->getClassementCatalogue($annee, $mois)
-            ->concat($this->getClassementAutresProduits($annee, $mois))
-            ->sortByDesc('volume_total')
+        // Volume is frequently left blank on price entries (only prices get filled in),
+        // so ties at 0 are common. Break ties by nb_occurrences so a product with real
+        // recorded data outranks one with none, instead of an arbitrary DB row order.
+        return $this->getClassementCatalogue($annee, $mois, $agenceId)
+            ->concat($this->getClassementAutresProduits($annee, $mois, $agenceId))
+            ->sortBy([
+                ['volume_total', 'desc'],
+                ['nb_occurrences', 'desc'],
+            ])
             ->values()
             ->all();
     }
@@ -68,17 +74,17 @@ class DashboardRepository
      * "produits externes" (catalogue products with statut false/null, plus every "autre
      * produit", which are all external by definition).
      */
-    public function getPartMarche(?int $annee = null, ?int $mois = null): array
+    public function getPartMarche(?int $annee = null, ?int $mois = null, ?int $agenceId = null): array
     {
-        $volumeNosProduits = (float) $this->requeteCatalogueParStatut(true, $annee, $mois)->sum('ref_prix_produit.volume');
-        $volumeCatalogueExterne = (float) $this->requeteCatalogueParStatut(false, $annee, $mois)->sum('ref_prix_produit.volume');
+        $volumeNosProduits = (float) $this->requeteCatalogueParStatut(true, $annee, $mois, $agenceId)->sum('ref_prix_produit.volume');
+        $volumeCatalogueExterne = (float) $this->requeteCatalogueParStatut(false, $annee, $mois, $agenceId)->sum('ref_prix_produit.volume');
 
-        $volumeAutresProduits = (float) $this->filtrerParPeriode(
+        $volumeAutresProduits = (float) $this->filtrerParAgence($this->filtrerParPeriode(
             AutreProduit::query()->join('visite', 'autre_produit.idvisite', '=', 'visite.id'),
             'visite.date',
             $annee,
             $mois
-        )->sum('autre_produit.volume');
+        ), $agenceId)->sum('autre_produit.volume');
 
         $volumeProduitsExternes = $volumeCatalogueExterne + $volumeAutresProduits;
         $volumeTotal = $volumeNosProduits + $volumeProduitsExternes;
@@ -104,7 +110,7 @@ class DashboardRepository
      * against autre_produit.nom after case/whitespace normalization). Returns null if
      * the product doesn't exist (catalogue) or has no data at all for the period (autre).
      */
-    public function getDetailProduit(string $type, ?int $produitId, ?string $nom, ?int $annee, ?int $mois): ?array
+    public function getDetailProduit(string $type, ?int $produitId, ?string $nom, ?int $annee, ?int $mois, ?int $agenceId = null): ?array
     {
         if ($type === 'catalogue') {
             $produit = Produit::find($produitId);
@@ -113,7 +119,7 @@ class DashboardRepository
                 return null;
             }
 
-            $lignes = $this->getLignesCatalogue($produitId, $annee, $mois);
+            $lignes = $this->getLignesCatalogue($produitId, $annee, $mois, $agenceId);
 
             return array_merge([
                 'type' => 'catalogue',
@@ -124,7 +130,7 @@ class DashboardRepository
         }
 
         $normalise = $this->normaliserNom($nom);
-        $lignes = $this->getLignesAutres($annee, $mois)
+        $lignes = $this->getLignesAutres($annee, $mois, $agenceId)
             ->filter(fn ($ligne) => $this->normaliserNom($ligne->nom) === $normalise)
             ->values();
 
@@ -140,9 +146,9 @@ class DashboardRepository
         ], $this->calculerDetail($lignes));
     }
 
-    private function getLignesCatalogue(int $produitId, ?int $annee, ?int $mois): Collection
+    private function getLignesCatalogue(int $produitId, ?int $annee, ?int $mois, ?int $agenceId = null): Collection
     {
-        return $this->filtrerParPeriode(
+        return $this->filtrerParAgence($this->filtrerParPeriode(
             RefPrixProduit::query()
                 ->join('produit_client', 'ref_prix_produit.idproduit', '=', 'produit_client.id')
                 ->join('visite', 'ref_prix_produit.idvisite', '=', 'visite.id')
@@ -151,7 +157,7 @@ class DashboardRepository
             'visite.date',
             $annee,
             $mois
-        )
+        ), $agenceId, clientDejaJoint: true)
             ->select(
                 'ref_prix_produit.prix_achat',
                 'ref_prix_produit.prix_vente_gros',
@@ -163,16 +169,16 @@ class DashboardRepository
             ->get();
     }
 
-    private function getLignesAutres(?int $annee, ?int $mois): Collection
+    private function getLignesAutres(?int $annee, ?int $mois, ?int $agenceId = null): Collection
     {
-        return $this->filtrerParPeriode(
+        return $this->filtrerParAgence($this->filtrerParPeriode(
             AutreProduit::query()
                 ->join('visite', 'autre_produit.idvisite', '=', 'visite.id')
                 ->join('client', 'visite.idclient', '=', 'client.id'),
             'visite.date',
             $annee,
             $mois
-        )
+        ), $agenceId, clientDejaJoint: true)
             ->select(
                 'autre_produit.nom',
                 'autre_produit.prix_achat',
@@ -231,9 +237,9 @@ class DashboardRepository
         ];
     }
 
-    private function requeteCatalogueParStatut(bool $estNotre, ?int $annee, ?int $mois): Builder
+    private function requeteCatalogueParStatut(bool $estNotre, ?int $annee, ?int $mois, ?int $agenceId = null): Builder
     {
-        $query = $this->filtrerParPeriode(
+        $query = $this->filtrerParAgence($this->filtrerParPeriode(
             RefPrixProduit::query()
                 ->join('produit_client', 'ref_prix_produit.idproduit', '=', 'produit_client.id')
                 ->join('produits', 'produit_client.idproduit', '=', 'produits.id')
@@ -241,7 +247,7 @@ class DashboardRepository
             'visite.date',
             $annee,
             $mois
-        );
+        ), $agenceId);
 
         return $estNotre
             ? $query->where('produits.statut', true)
@@ -254,23 +260,17 @@ class DashboardRepository
      * All catalogue products, including those with no price ever recorded (volume 0,
      * null price averages) — left-joined from produits so none are silently dropped.
      */
-    private function getClassementCatalogue(?int $annee, ?int $mois): Collection
+    private function getClassementCatalogue(?int $annee, ?int $mois, ?int $agenceId = null): Collection
     {
-        $idsVisitePeriode = ($annee || $mois)
-            ? Visite::query()
-                ->when($annee, fn ($q) => $q->whereYear('date', $annee))
-                ->when($mois, fn ($q) => $q->whereMonth('date', $mois))
-                ->pluck('id')
-                ->all()
-            : null;
+        $idsVisiteFiltrees = $this->getIdsVisiteFiltrees($annee, $mois, $agenceId);
 
         return Produit::query()
             ->leftJoin('produit_client', 'produit_client.idproduit', '=', 'produits.id')
-            ->leftJoin('ref_prix_produit', function ($join) use ($idsVisitePeriode) {
+            ->leftJoin('ref_prix_produit', function ($join) use ($idsVisiteFiltrees) {
                 $join->on('ref_prix_produit.idproduit', '=', 'produit_client.id');
 
-                if ($idsVisitePeriode !== null) {
-                    $join->whereIn('ref_prix_produit.idvisite', $idsVisitePeriode);
+                if ($idsVisiteFiltrees !== null) {
+                    $join->whereIn('ref_prix_produit.idvisite', $idsVisiteFiltrees);
                 }
             })
             ->selectRaw('
@@ -299,14 +299,29 @@ class DashboardRepository
             ]);
     }
 
-    private function getClassementAutresProduits(?int $annee, ?int $mois): Collection
+    /** Visite ids matching the given year/month/agence, or null when no filter applies. */
+    private function getIdsVisiteFiltrees(?int $annee, ?int $mois, ?int $agenceId): ?array
     {
-        return $this->filtrerParPeriode(
+        if (! $annee && ! $mois && ! $agenceId) {
+            return null;
+        }
+
+        return Visite::query()
+            ->when($annee, fn ($q) => $q->whereYear('date', $annee))
+            ->when($mois, fn ($q) => $q->whereMonth('date', $mois))
+            ->when($agenceId, fn ($q) => $q->whereHas('client', fn ($cq) => $cq->where('idagence', $agenceId)))
+            ->pluck('id')
+            ->all();
+    }
+
+    private function getClassementAutresProduits(?int $annee, ?int $mois, ?int $agenceId = null): Collection
+    {
+        return $this->filtrerParAgence($this->filtrerParPeriode(
             AutreProduit::query()->join('visite', 'autre_produit.idvisite', '=', 'visite.id'),
             'visite.date',
             $annee,
             $mois
-        )
+        ), $agenceId)
             ->select('autre_produit.*')
             ->get()
             ->groupBy(fn (AutreProduit $produit) => $this->normaliserNom($produit->nom))

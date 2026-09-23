@@ -13,11 +13,11 @@ class PlvStatsService
         $this->plvStatsRepository = $plvStatsRepository;
     }
 
-    public function getPlvStats(?int $annee = null, ?int $mois = null): array
+    public function getPlvStats(?int $annee = null, ?int $mois = null, ?int $agenceId = null): array
     {
         return array_merge(
-            ['periode' => ['annee' => $annee, 'mois' => $mois]],
-            $this->plvStatsRepository->getStats($annee, $mois)
+            ['periode' => ['annee' => $annee, 'mois' => $mois, 'agence_id' => $agenceId]],
+            $this->plvStatsRepository->getStats($annee, $mois, $agenceId)
         );
     }
 }

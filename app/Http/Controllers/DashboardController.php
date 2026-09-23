@@ -23,14 +23,16 @@ class DashboardController extends Controller
             'limit' => ['nullable', 'integer', 'min:1'],
             'annee' => ['nullable', 'integer', 'digits:4'],
             'mois' => ['nullable', 'integer', 'between:1,12'],
+            'agence_id' => ['nullable', 'integer', 'exists:agence,id'],
         ]);
 
         $limit = $request->query('limit') ? (int) $request->query('limit') : null;
         $annee = $request->query('annee') ? (int) $request->query('annee') : null;
         $mois = $request->query('mois') ? (int) $request->query('mois') : null;
+        $agenceId = $request->query('agence_id') ? (int) $request->query('agence_id') : null;
 
         return response()->json(
-            $this->dashboardService->getProduitStats($limit, $annee, $mois)
+            $this->dashboardService->getProduitStats($limit, $annee, $mois, $agenceId)
         );
     }
 
@@ -42,6 +44,7 @@ class DashboardController extends Controller
             'nom' => ['required_if:type,autre', 'string'],
             'annee' => ['nullable', 'integer', 'digits:4'],
             'mois' => ['nullable', 'integer', 'between:1,12'],
+            'agence_id' => ['nullable', 'integer', 'exists:agence,id'],
         ]);
 
         $type = $request->query('type');
@@ -49,8 +52,9 @@ class DashboardController extends Controller
         $nom = $request->query('nom');
         $annee = $request->query('annee') ? (int) $request->query('annee') : null;
         $mois = $request->query('mois') ? (int) $request->query('mois') : null;
+        $agenceId = $request->query('agence_id') ? (int) $request->query('agence_id') : null;
 
-        $detail = $this->dashboardService->getProduitDetail($type, $produitId, $nom, $annee, $mois);
+        $detail = $this->dashboardService->getProduitDetail($type, $produitId, $nom, $annee, $mois, $agenceId);
 
         if (! $detail) {
             return response()->json([
@@ -66,13 +70,15 @@ class DashboardController extends Controller
         $request->validate([
             'annee' => ['nullable', 'integer', 'digits:4'],
             'mois' => ['nullable', 'integer', 'between:1,12'],
+            'agence_id' => ['nullable', 'integer', 'exists:agence,id'],
         ]);
 
         $annee = $request->query('annee') ? (int) $request->query('annee') : null;
         $mois = $request->query('mois') ? (int) $request->query('mois') : null;
+        $agenceId = $request->query('agence_id') ? (int) $request->query('agence_id') : null;
 
         return response()->json(
-            $this->plvStatsService->getPlvStats($annee, $mois)
+            $this->plvStatsService->getPlvStats($annee, $mois, $agenceId)
         );
     }
 }
