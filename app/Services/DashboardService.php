@@ -19,6 +19,7 @@ class DashboardService
 
         return [
             'periode' => ['annee' => $annee, 'mois' => $mois, 'agence_id' => $agenceId],
+            'nb_clients_visites' => $this->dashboardRepository->getNbClientsVisites($annee, $mois, $agenceId),
             'prix_moyen_par_type' => $this->dashboardRepository->getPrixMoyenParType($annee, $mois, $agenceId),
             'meilleur_produit' => $classement[0] ?? null,
             'produits' => $limit ? array_slice($classement, 0, $limit) : $classement,

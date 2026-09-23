@@ -56,11 +56,13 @@ class DashboardRepository
      */
     public function getClassementProduits(?int $annee = null, ?int $mois = null, ?int $agenceId = null): array
     {
+        $nbClientsVisites = $this->getNbClientsVisites($annee, $mois, $agenceId);
+
         // Volume is frequently left blank on price entries (only prices get filled in),
         // so ties at 0 are common. Break ties by nb_occurrences so a product with real
         // recorded data outranks one with none, instead of an arbitrary DB row order.
-        return $this->getClassementCatalogue($annee, $mois, $agenceId)
-            ->concat($this->getClassementAutresProduits($annee, $mois, $agenceId))
+        return $this->getClassementCatalogue($annee, $mois, $agenceId, $nbClientsVisites)
+            ->concat($this->getClassementAutresProduits($annee, $mois, $agenceId, $nbClientsVisites))
             ->sortBy([
                 ['volume_total', 'desc'],
                 ['nb_occurrences', 'desc'],
@@ -112,6 +114,8 @@ class DashboardRepository
      */
     public function getDetailProduit(string $type, ?int $produitId, ?string $nom, ?int $annee, ?int $mois, ?int $agenceId = null): ?array
     {
+        $nbClientsVisites = $this->getNbClientsVisites($annee, $mois, $agenceId);
+
         if ($type === 'catalogue') {
             $produit = Produit::find($produitId);
 
@@ -126,7 +130,7 @@ class DashboardRepository
                 'produit_id' => $produit->id,
                 'nom' => $produit->intitule,
                 'origine' => $produit->statut ? 'nos_produits' : 'externe',
-            ], $this->calculerDetail($lignes));
+            ], $this->calculerDetail($lignes, $nbClientsVisites));
         }
 
         $normalise = $this->normaliserNom($nom);
@@ -143,7 +147,7 @@ class DashboardRepository
             'produit_id' => null,
             'nom' => $lignes->pluck('nom')->countBy()->sortDesc()->keys()->first(),
             'origine' => 'externe',
-        ], $this->calculerDetail($lignes));
+        ], $this->calculerDetail($lignes, $nbClientsVisites));
     }
 
     private function getLignesCatalogue(int $produitId, ?int $annee, ?int $mois, ?int $agenceId = null): Collection
@@ -192,10 +196,11 @@ class DashboardRepository
     }
 
     /** Computes averages and, per field, the max/min value with the client it came from. */
-    private function calculerDetail(Collection $lignes): array
+    private function calculerDetail(Collection $lignes, int $nbClientsVisites = 0): array
     {
         return [
             'nb_occurrences' => $lignes->count(),
+            'presence' => $this->calculerPresence($lignes, $nbClientsVisites),
             'prix_moyen' => [
                 'prix_achat' => $this->moyenne($lignes->pluck('prix_achat')),
                 'prix_vente_gros' => $this->moyenne($lignes->pluck('prix_vente_gros')),
@@ -237,6 +242,42 @@ class DashboardRepository
         ];
     }
 
+    /**
+     * A product is considered "present" for a client as soon as a price (any of
+     * prix_achat/prix_vente_gros/prix_vente_details) was recorded during one of their
+     * visits — even when volume was left blank, which is the case for most agences.
+     */
+    private function aUnPrix($ligne): bool
+    {
+        return $ligne->prix_achat !== null || $ligne->prix_vente_gros !== null || $ligne->prix_vente_details !== null;
+    }
+
+    /** Distinct-client presence count/rate for a set of price lines (each with a client_id). */
+    private function calculerPresence(Collection $lignes, int $nbClientsVisites): array
+    {
+        $nbClients = $lignes->filter(fn ($ligne) => $this->aUnPrix($ligne))
+            ->pluck('client_id')
+            ->unique()
+            ->count();
+
+        return [
+            'nb_clients' => $nbClients,
+            'nb_clients_visites' => $nbClientsVisites,
+            'taux_presence' => $this->pourcentage((float) $nbClients, (float) $nbClientsVisites),
+        ];
+    }
+
+    /** Distinct clients with at least one visite matching the given filters. */
+    public function getNbClientsVisites(?int $annee, ?int $mois, ?int $agenceId): int
+    {
+        return $this->filtrerParAgence($this->filtrerParPeriode(
+            Visite::query(),
+            'date',
+            $annee,
+            $mois
+        ), $agenceId)->distinct('visite.idclient')->count('visite.idclient');
+    }
+
     private function requeteCatalogueParStatut(bool $estNotre, ?int $annee, ?int $mois, ?int $agenceId = null): Builder
     {
         $query = $this->filtrerParAgence($this->filtrerParPeriode(
@@ -260,7 +301,7 @@ class DashboardRepository
      * All catalogue products, including those with no price ever recorded (volume 0,
      * null price averages) — left-joined from produits so none are silently dropped.
      */
-    private function getClassementCatalogue(?int $annee, ?int $mois, ?int $agenceId = null): Collection
+    private function getClassementCatalogue(?int $annee, ?int $mois, ?int $agenceId = null, int $nbClientsVisites = 0): Collection
     {
         $idsVisiteFiltrees = $this->getIdsVisiteFiltrees($annee, $mois, $agenceId);
 
@@ -273,6 +314,8 @@ class DashboardRepository
                     $join->whereIn('ref_prix_produit.idvisite', $idsVisiteFiltrees);
                 }
             })
+            ->leftJoin('visite', 'ref_prix_produit.idvisite', '=', 'visite.id')
+            ->leftJoin('client', 'visite.idclient', '=', 'client.id')
             ->selectRaw('
                 produits.id as produit_id,
                 produits.intitule as nom,
@@ -281,7 +324,11 @@ class DashboardRepository
                 AVG(ref_prix_produit.prix_achat) as prix_achat_moyen,
                 AVG(ref_prix_produit.prix_vente_gros) as prix_vente_gros_moyen,
                 AVG(ref_prix_produit.prix_vente_details) as prix_vente_details_moyen,
-                COUNT(ref_prix_produit.id) as nb_occurrences
+                COUNT(ref_prix_produit.id) as nb_occurrences,
+                COUNT(DISTINCT CASE WHEN ref_prix_produit.prix_achat IS NOT NULL
+                    OR ref_prix_produit.prix_vente_gros IS NOT NULL
+                    OR ref_prix_produit.prix_vente_details IS NOT NULL
+                    THEN client.id END) as nb_clients_presence
             ')
             ->groupBy('produits.id', 'produits.intitule', 'produits.statut')
             ->get()
@@ -296,6 +343,11 @@ class DashboardRepository
                 'prix_vente_gros_moyen' => $this->arrondir($row->prix_vente_gros_moyen),
                 'prix_vente_details_moyen' => $this->arrondir($row->prix_vente_details_moyen),
                 'nb_occurrences' => (int) $row->nb_occurrences,
+                'presence' => [
+                    'nb_clients' => (int) $row->nb_clients_presence,
+                    'nb_clients_visites' => $nbClientsVisites,
+                    'taux_presence' => $this->pourcentage((float) $row->nb_clients_presence, (float) $nbClientsVisites),
+                ],
             ]);
     }
 
@@ -314,7 +366,7 @@ class DashboardRepository
             ->all();
     }
 
-    private function getClassementAutresProduits(?int $annee, ?int $mois, ?int $agenceId = null): Collection
+    private function getClassementAutresProduits(?int $annee, ?int $mois, ?int $agenceId = null, int $nbClientsVisites = 0): Collection
     {
         return $this->filtrerParAgence($this->filtrerParPeriode(
             AutreProduit::query()->join('visite', 'autre_produit.idvisite', '=', 'visite.id'),
@@ -322,10 +374,10 @@ class DashboardRepository
             $annee,
             $mois
         ), $agenceId)
-            ->select('autre_produit.*')
+            ->select('autre_produit.*', 'visite.idclient as client_id')
             ->get()
             ->groupBy(fn (AutreProduit $produit) => $this->normaliserNom($produit->nom))
-            ->map(function (Collection $groupe) {
+            ->map(function (Collection $groupe) use ($nbClientsVisites) {
                 $noms = $groupe->pluck('nom');
                 $nomRepresentatif = $noms->countBy()->sortDesc()->keys()->first();
 
@@ -340,6 +392,7 @@ class DashboardRepository
                     'prix_vente_gros_moyen' => $this->moyenne($groupe->pluck('prix_vente_gros')),
                     'prix_vente_details_moyen' => $this->moyenne($groupe->pluck('prix_vente_details')),
                     'nb_occurrences' => $groupe->count(),
+                    'presence' => $this->calculerPresence($groupe, $nbClientsVisites),
                 ];
             })
             ->values();
